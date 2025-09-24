@@ -1,9 +1,9 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\servicios_procesos\\ariketa2_U1-servidor\\",
+  "WorkspaceRootPath": "C:\\Users\\aitor\\Documents\\DAM\\ZUBIRI\\servicios_procesos\\U1\\ariketa2_U1-servidor\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{30A473EE-8DCD-4C3A-8E55-96B765112A8C}|serbidorea.csproj|d:\\servicios_procesos\\ariketa2_u1-servidor\\serbidorea.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{30A473EE-8DCD-4C3A-8E55-96B765112A8C}|serbidorea.csproj|c:\\users\\aitor\\documents\\dam\\zubiri\\servicios_procesos\\u1\\ariketa2_u1-servidor\\serbidorea.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{30A473EE-8DCD-4C3A-8E55-96B765112A8C}|serbidorea.csproj|solutionrelative:serbidorea.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -20,11 +20,11 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "serbidorea.cs",
-              "DocumentMoniker": "D:\\servicios_procesos\\ariketa2_U1-servidor\\serbidorea.cs",
+              "DocumentMoniker": "C:\\Users\\aitor\\Documents\\DAM\\ZUBIRI\\servicios_procesos\\U1\\ariketa2_U1-servidor\\serbidorea.cs",
               "RelativeDocumentMoniker": "serbidorea.cs",
-              "ToolTip": "D:\\servicios_procesos\\ariketa2_U1-servidor\\serbidorea.cs",
+              "ToolTip": "C:\\Users\\aitor\\Documents\\DAM\\ZUBIRI\\servicios_procesos\\U1\\ariketa2_U1-servidor\\serbidorea.cs",
               "RelativeToolTip": "serbidorea.cs",
-              "ViewState": "AgIAAAIAAAAAAAAAAAAxwAkAAAAYAAAAAAAAAA==",
+              "ViewState": "AgIAACEAAAAAAAAAAAAowFYAAABRAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-24T07:41:22.189Z",
               "EditorCaption": ""

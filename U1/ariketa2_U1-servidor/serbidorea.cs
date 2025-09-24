@@ -4,92 +4,90 @@ class Servidor
 {
     static void Main()
     {
-        Server();
+        try
+        {
+            Server();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+        }
+        
     }
 
-    static void Server()
+    public static void Server()
     {
         // Creamos el servidor pipe con nombre "pipeando"
-        using (var serverConnect = new NamedPipeServerStream("pipeando"))
+        var serverConnect = new NamedPipeServerStream("pipeando");
+        
+        Console.WriteLine("Servidor esperando conexión...");
+
+        serverConnect.WaitForConnection(); // Esperamos cliente
+
+        Console.WriteLine("Cliente conectado.");
+
+        var sr = new StreamReader(serverConnect);
+        var sw = new StreamWriter(serverConnect);
+            
+        string operacion;
+
+        // Bucle para procesar operaciones mientras el cliente esté conectado
+        while (true)
         {
-            Console.WriteLine("Servidor esperando conexión...");
+            operacion = sr.ReadLine();
+            Console.WriteLine($"Operacion recibida: {operacion}");
 
-            serverConnect.WaitForConnection(); // Esperamos cliente
+            // Parseatu eragiketa
+            String[] partes = operacion.Split(' ');
 
-            Console.WriteLine("Cliente conectado.");
+            string operador = partes[0];
+            float x = float.Parse(partes[1]);
+            float y = float.Parse(partes[2]);
+            double resultado = 0;
+            bool errorOperacion = false;
 
-            using (var sr = new StreamReader(serverConnect))
-            using (var sw = new StreamWriter(serverConnect))
+            Console.WriteLine("Operacion a realizar: " + x + operador + y);
+
+            // Procesamos la operación
+            switch (operador)
             {
-                string operacion;
-
-                // Bucle para procesar operaciones mientras el cliente esté conectado
-                while ((operacion = sr.ReadLine()) != null)
-                {
-                    Console.WriteLine($"Operacion recibida: {operacion}");
-
-                    // Se espera formato: operador x y (ejemplo: "+ 4 5")
-                    string[] partes = operacion.Split(' ');
-
-                    if (partes.Length != 3)
+                case "+":
+                    resultado = x + y;
+                    break;
+                case "-":
+                    resultado = x - y;
+                    break;
+                case "*":
+                    resultado = x * y;
+                    break;
+                case "/":
+                    if (y == 0)
                     {
-                        sw.WriteLine("Error: formato incorrecto.");
+                        sw.WriteLine("Error: división entre cero.");
                         sw.Flush();
-                        continue;
+                        errorOperacion = true;
                     }
-
-                    string operador = partes[0];
-                    if (!double.TryParse(partes[1], out double x) || !double.TryParse(partes[2], out double y))
+                    else
                     {
-                        sw.WriteLine("Error: operandos invalidos.");
-                        sw.Flush();
-                        continue;
+                        resultado = x / y;
                     }
+                    break;
+                case "^":
+                    resultado = Math.Pow(x, y);
+                    break;
+                default:
+                    sw.WriteLine("Error: operador no válido.");
+                    sw.Flush();
+                    errorOperacion = true;
+                    break;
+            }
 
-                    double resultado = 0;
-                    bool errorOperacion = false;
-
-                    // Procesamos la operación
-                    switch (operador)
-                    {
-                        case "+":
-                            resultado = x + y;
-                            break;
-                        case "-":
-                            resultado = x - y;
-                            break;
-                        case "*":
-                            resultado = x * y;
-                            break;
-                        case "/":
-                            if (y == 0)
-                            {
-                                sw.WriteLine("Error: división entre cero.");
-                                sw.Flush();
-                                errorOperacion = true;
-                            }
-                            else
-                            {
-                                resultado = x / y;
-                            }
-                            break;
-                        case "^":
-                            resultado = Math.Pow(x, y);
-                            break;
-                        default:
-                            sw.WriteLine("Error: operador no válido.");
-                            sw.Flush();
-                            errorOperacion = true;
-                            break;
-                    }
-
-                    if (!errorOperacion)
-                    {
-                        // Enviamos el resultado al cliente
-                        sw.WriteLine(resultado);
-                        sw.Flush();
-                    }
-                }
+            if (!errorOperacion)
+            {
+                Console.WriteLine("Resultado a mandar al cliente: " + resultado);
+                // Enviamos el resultado al cliente
+                sw.WriteLine(resultado);
+                sw.Flush();
             }
         }
     }
