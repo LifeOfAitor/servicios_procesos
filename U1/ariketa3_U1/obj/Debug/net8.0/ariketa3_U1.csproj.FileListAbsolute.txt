@@ -1,0 +1,15 @@
+D:\servicios_procesos\U1\ariketa3_U1\bin\Debug\net8.0\ariketa3_U1.exe
+D:\servicios_procesos\U1\ariketa3_U1\bin\Debug\net8.0\ariketa3_U1.deps.json
+D:\servicios_procesos\U1\ariketa3_U1\bin\Debug\net8.0\ariketa3_U1.runtimeconfig.json
+D:\servicios_procesos\U1\ariketa3_U1\bin\Debug\net8.0\ariketa3_U1.dll
+D:\servicios_procesos\U1\ariketa3_U1\bin\Debug\net8.0\ariketa3_U1.pdb
+D:\servicios_procesos\U1\ariketa3_U1\obj\Debug\net8.0\ariketa3_U1.GeneratedMSBuildEditorConfig.editorconfig
+D:\servicios_procesos\U1\ariketa3_U1\obj\Debug\net8.0\ariketa3_U1.AssemblyInfoInputs.cache
+D:\servicios_procesos\U1\ariketa3_U1\obj\Debug\net8.0\ariketa3_U1.AssemblyInfo.cs
+D:\servicios_procesos\U1\ariketa3_U1\obj\Debug\net8.0\ariketa3_U1.csproj.CoreCompileInputs.cache
+D:\servicios_procesos\U1\ariketa3_U1\obj\Debug\net8.0\ariketa3_U1.sourcelink.json
+D:\servicios_procesos\U1\ariketa3_U1\obj\Debug\net8.0\ariketa3_U1.dll
+D:\servicios_procesos\U1\ariketa3_U1\obj\Debug\net8.0\refint\ariketa3_U1.dll
+D:\servicios_procesos\U1\ariketa3_U1\obj\Debug\net8.0\ariketa3_U1.pdb
+D:\servicios_procesos\U1\ariketa3_U1\obj\Debug\net8.0\ariketa3_U1.genruntimeconfig.cache
+D:\servicios_procesos\U1\ariketa3_U1\obj\Debug\net8.0\ref\ariketa3_U1.dll

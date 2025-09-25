@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("serbidorea")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c90792a1fd9bdd6096215ba5c30304ce49b5f506")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+aeb143912c4d8c3d47c67d04fd60dc89c79dcfad")]
 [assembly: System.Reflection.AssemblyProductAttribute("serbidorea")]
 [assembly: System.Reflection.AssemblyTitleAttribute("serbidorea")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

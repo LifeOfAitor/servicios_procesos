@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "ariketa3_U1.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "..\\ariketa3_U1_zerbitzaria\\ariketa3_U1_zerbitzaria.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

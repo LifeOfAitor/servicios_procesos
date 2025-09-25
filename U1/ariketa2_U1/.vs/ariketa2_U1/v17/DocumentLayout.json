@@ -1,10 +1,13 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\aitor\\Documents\\DAM\\ZUBIRI\\servicios_procesos\\U1\\ariketa2_U1\\",
+  "WorkspaceRootPath": "D:\\servicios_procesos\\U1\\ariketa2_U1\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{468C2E75-A1D0-45F3-804F-F441ECEB1096}|ariketa2_U1.csproj|c:\\users\\aitor\\documents\\dam\\zubiri\\servicios_procesos\\u1\\ariketa2_u1\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{468C2E75-A1D0-45F3-804F-F441ECEB1096}|ariketa2_U1.csproj|d:\\servicios_procesos\\u1\\ariketa2_u1\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{468C2E75-A1D0-45F3-804F-F441ECEB1096}|ariketa2_U1.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{29B2C758-E366-DEDC-8D3E-DCD376139B99}|..\\ariketa2_U1-servidor\\serbidorea.csproj|d:\\servicios_procesos\\u1\\ariketa2_u1-servidor\\serbidorea.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,17 +17,30 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "serbidorea.cs",
+              "DocumentMoniker": "D:\\servicios_procesos\\U1\\ariketa2_U1-servidor\\serbidorea.cs",
+              "RelativeDocumentMoniker": "..\\ariketa2_U1-servidor\\serbidorea.cs",
+              "ToolTip": "D:\\servicios_procesos\\U1\\ariketa2_U1-servidor\\serbidorea.cs",
+              "RelativeToolTip": "..\\ariketa2_U1-servidor\\serbidorea.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-25T07:07:34.957Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\aitor\\Documents\\DAM\\ZUBIRI\\servicios_procesos\\U1\\ariketa2_U1\\Program.cs",
+              "DocumentMoniker": "D:\\servicios_procesos\\U1\\ariketa2_U1\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "C:\\Users\\aitor\\Documents\\DAM\\ZUBIRI\\servicios_procesos\\U1\\ariketa2_U1\\Program.cs",
+              "ToolTip": "D:\\servicios_procesos\\U1\\ariketa2_U1\\Program.cs",
               "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAAIAAAAAAAAAAAAqwFUAAAA6AAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-17T07:40:09.056Z",
               "EditorCaption": ""
