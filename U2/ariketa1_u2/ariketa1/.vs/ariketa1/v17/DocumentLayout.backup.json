@@ -3,8 +3,8 @@
   "WorkspaceRootPath": "D:\\servicios_procesos\\U2\\ariketa1_u2\\ariketa1\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{6183E779-72B6-4D94-A0EF-785ED737DE85}|ariketa1.csproj|d:\\servicios_procesos\\u2\\ariketa1_u2\\ariketa1\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6183E779-72B6-4D94-A0EF-785ED737DE85}|ariketa1.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{6183E779-72B6-4D94-A0EF-785ED737DE85}|ariketa1.csproj|d:\\servicios_procesos\\u2\\ariketa1_u2\\ariketa1\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6183E779-72B6-4D94-A0EF-785ED737DE85}|ariketa1.csproj|solutionrelative:class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -19,14 +19,14 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Program.cs",
-              "DocumentMoniker": "D:\\servicios_procesos\\U2\\ariketa1_u2\\ariketa1\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "D:\\servicios_procesos\\U2\\ariketa1_u2\\ariketa1\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAmwBEAAAAAAAAAAAAAAA==",
+              "Title": "Class1.cs",
+              "DocumentMoniker": "D:\\servicios_procesos\\U2\\ariketa1_u2\\ariketa1\\Class1.cs",
+              "RelativeDocumentMoniker": "Class1.cs",
+              "ToolTip": "D:\\servicios_procesos\\U2\\ariketa1_u2\\ariketa1\\Class1.cs",
+              "RelativeToolTip": "Class1.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAC8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-01T07:24:36.425Z",
+              "WhenOpened": "2025-10-01T07:56:04.281Z",
               "EditorCaption": ""
             }
           ]
