@@ -9,7 +9,13 @@ class Edurnezuri
 
     public void JanariaEman()
     {
-        Console.WriteLine("Janaria eman diot ipotxari");
+        Thread.Sleep(500); // Janaria emateko denbora
+    }
+    public void paseatu()
+    {
+        Random random = new Random();
+        Console.WriteLine("Edurnezurik paseatzen du.");
+        Thread.Sleep(random.Next(1000, 2000));
     }
 }
 
@@ -25,391 +31,162 @@ class Ipotxa
     }
     public void jan()
     {
+        Random random = new Random();
         Console.WriteLine($"{Id} jaten ari da.");
+        Thread.Sleep(random.Next(1000, 2000));
     }
     public void lanean()
     {
+        Random random = new Random();
         Console.WriteLine($"{Id} lanean ari da.");
+        Thread.Sleep(random.Next(2000, 4000));
     }
 }
 
-static class Aulkiak
+class Aulkiak
 {
-    public static int aulkiaKopurua = 4;
+    public static readonly int aulkiaKopurua = 4;
     public static int aulkiakErabiliak = 0;
 
     public static bool aulkiakLibre()
     {
         return aulkiakErabiliak < aulkiaKopurua;
     }
+    public static bool esanEserita()
+    {
+        return aulkiakErabiliak > 0;
+    }
+
+    public static void hartuAulkia()
+    {
+        aulkiakErabiliak++;
+    }
+
+    public static void askatuAulkia()
+    {
+        aulkiakErabiliak--;
+    }
+
+    public static int erabilitaKopurua()
+    {
+        return aulkiakErabiliak;
+    }
 }
 
 class ProgramaNagusia
 {
-    static void Main(string[] args)
+    static object lockObject = new object();
+    static Edurnezuri edurnezuri = new Edurnezuri();
+    static Ipotxa[] ipotxak;
+
+    public static void Main(string[] args)
     {
-        object lockObject = new object();
-        Edurnezuri edurnezuri = new Edurnezuri();
-        Ipotxa[] ipotxak = {
-            new Ipotxa(1), new Ipotxa(2), new Ipotxa(3),
-            new Ipotxa(4), new Ipotxa(5), new Ipotxa(6), new Ipotxa(7)
-        };
-
-        Console.WriteLine("Simulazioa hasi da.");
-
-        // Task Edurnezuri
-        Task.Run(() =>
+        ipotxak = new Ipotxa[7];
+        for (int i = 0; i < ipotxak.Length; i++)
         {
-            while (true)
+            ipotxak[i] = new Ipotxa(i + 1);
+        }
+
+        Thread edurnezuriThread = new Thread(edurnezuriFuntzioa);
+        edurnezuriThread.Start();
+
+        foreach (var ipotxa in ipotxak)
+        {
+            Thread ipotxaThread = new Thread(ipotxakFuntzioa);
+            ipotxaThread.Start(ipotxa);
+        }
+    }
+    static void ipotxakFuntzioa(object obj)
+    {
+        //egin behar da casting thread-ek object mota eskatzen duelako nahitanahiez
+        Ipotxa ipotxa = (Ipotxa)obj;
+        while(true)
+        {
+            //lanean dago
+            ipotxa.lanean();
+            lock (lockObject)
             {
-                lock (lockObject)
+                //aulki librerik ez egon arte itxaroten egongo da
+                while (!Aulkiak.aulkiakLibre())
                 {
-                    //paseatzen egongo da aulkiak libre dauden bitartean
-                    while (Aulkiak.aulkiakLibre())
-                    {
-                        edurnezuri.paseatzen = true;
-                        Console.WriteLine("Edurnezuri paseatzen");
-                        Monitor.Wait(lockObject);
-                    }
+                    Console.WriteLine($"{ipotxa.Id} itxaroten...");
+                    Monitor.Wait(lockObject);
+                }
+                ipotxa.eserita = true;
+                Aulkiak.hartuAulkia();
+                Console.WriteLine($"{ipotxa.Id} 'Eserita nago, mesedez eman janaria'");
 
-                    edurnezuri.paseatzen = false;
-                    Console.WriteLine("Edurnezuri ez dago paseatzen");
+                //edurnezuriri eserita dagoela esaten dio
+                Monitor.PulseAll(lockObject);
 
-                    // Janaria ematen die eserita dauden ipotxei
-                    for (int i = 0; i < Aulkiak.aulkiakErabiliak; i++)
+                //janaria prestatu arte itxaroten du
+                while (!edurnezuri.zerbitzatuta)
+                {
+                    Monitor.Wait(lockObject);
+                }
+            }
+            //janaria jaten du
+            ipotxa.jan();
+            lock (lockObject)
+            {
+                //aulkitik altxatzen da eta aulkia libre dagoela dio
+                ipotxa.eserita = false;
+                Aulkiak.askatuAulkia();
+                Console.WriteLine($"{ipotxa.Id} altxatu da. Aulkiak erabilita: {Aulkiak.erabilitaKopurua()}");
+
+                //Edurnezuriri aulkia libre dagoela esaten dio
+                Monitor.PulseAll(lockObject);
+            }
+        }
+    }
+    static void edurnezuriFuntzioa()
+    {
+        while (true)
+        {
+            lock (lockObject)
+            {
+                // Paseatzen aulki guztiak hutsik dauden bitartean
+                while (Aulkiak.erabilitaKopurua() == 0)
+                {
+                    edurnezuri.paseatzen = true;
+                    edurnezuri.paseatu();
+                    Monitor.Wait(lockObject);
+                }
+
+                edurnezuri.paseatzen = false;
+                Console.WriteLine("Edurnezuri paseatzetik bueltatu da.");
+
+                // Janaria eman eserita dauden ipotxei
+                for (int i = 0; i < ipotxak.Length; i++)
+                {
+                    if (ipotxak[i].eserita)
                     {
+                        Console.WriteLine($"Edurnezurik janaria eman dio {ipotxak[i].Id} ipotxari.");
                         edurnezuri.JanariaEman();
                     }
-
-                    edurnezuri.zerbitzatuta = true;
-                    Console.WriteLine("Janaria zerbitzatuta dago");
-
-                    Monitor.PulseAll(lockObject); // Ipotxei janaria prest dagoela esaten die
-
-                    // Jaten bukatzen duten harte itxaroten du
-                    while (Aulkiak.aulkiakErabiliak > 0)
-                    {
-                        Monitor.Wait(lockObject);
-                    }
-
-                    edurnezuri.zerbitzatuta = false;
-                    Monitor.PulseAll(lockObject);
                 }
-            }
-        });
 
-        // Hilo Ipotxak, bat bakoitzeko
-        Task.Run(() =>
-        {
-            while (true)
-            {
-                lock (lockObject)
+                // Janaria zerbitzatu da guztiei
+                edurnezuri.zerbitzatuta = true;
+                Console.WriteLine("Janaria zerbitzatuta dago. Jaten hasi zaitezkete.");
+                Monitor.PulseAll(lockObject);
+
+                // Itxaron ipotx guztiak altxa arte (aulkiak hutsik)
+                while (Aulkiak.erabilitaKopurua() > 0)
                 {
-                    // Aulki librea itxaroten du
-                    while (!Aulkiak.aulkiakLibre())
-                    {
-                        Monitor.Wait(lockObject);
-                    }
-
-                    // Eseritzen da
-                    ipotxak[0].eserita = true;
-                    Aulkiak.aulkiakErabiliak++;
-                    Console.WriteLine($"Ipotxa {ipotxak[0].Id} eserita.");
-
-                    Monitor.PulseAll(lockObject); // Eserita dagoela esaten dio Edurnezuriri
-
-                    // Janaria zerbitzatuta egon arte itxaroten du
-                    while (!edurnezuri.zerbitzatuta)
-                    {
-                        Monitor.Wait(lockObject);
-                    }
-
-                    // Jan
-                    ipotxak[0].jan();
-
-                    // altxatu elta lanera doa
-                    ipotxak[0].eserita = false;
-                    Aulkiak.aulkiakErabiliak--;
-                    Console.WriteLine($"Ipotxa {ipotxak[0].Id} altxatu da.");
-
-                    ipotxak[0].lanean();
-
-                    Monitor.PulseAll(lockObject); // aulkia libre dagoela esaten dio Edurnezuriri
+                    Monitor.Wait(lockObject);
                 }
-            }
-        });
-        Task.Run(() =>
-        {
-            while (true)
-            {
-                lock (lockObject)
+
+                if (Aulkiak.erabilitaKopurua() > 0)
                 {
-                        // Aulki librea itxaroten du
-                        while (!Aulkiak.aulkiakLibre())
-                        {
-                            Monitor.Wait(lockObject);
-                        }
-
-                    // Eseritzen da
-                        ipotxak[1].eserita = true;
-                        Aulkiak.aulkiakErabiliak++;
-                        Console.WriteLine($"Ipotxa {ipotxak[1].Id} eserita.");
-
-                        Monitor.PulseAll(lockObject); // Eserita dagoela esaten dio Edurnezuriri
-
-                        // Janaria zerbitzatuta egon arte itxaroten du
-                        while (!edurnezuri.zerbitzatuta)
-                        {
-                            Monitor.Wait(lockObject);
-                        }
-
-                        // Jan
-                        ipotxak[1].jan();
-
-                        // altxatu elta lanera doa
-                        ipotxak[1].eserita = false;
-                        Aulkiak.aulkiakErabiliak--;
-                        Console.WriteLine($"Ipotxa {ipotxak[1].Id} altxatu da.");
-
-                        ipotxak[1].lanean();
-
-                        Monitor.PulseAll(lockObject); // aulkia libre dagoela esaten dio Edurnezuriri
+                    continue; // Volver al inicio del bucle sin pasear todavía
                 }
+
+                Console.WriteLine("Ipotx guztiak altxatu dira. Edurnezuri paseatzera doa berriro.");
+                edurnezuri.zerbitzatuta = false;
+                Monitor.PulseAll(lockObject);
             }
-        });
-        Task.Run(() =>
-        {
-            while (true)
-            {
-                lock (lockObject)
-                {
-                        // Aulki librea itxaroten du
-                        while (!Aulkiak.aulkiakLibre())
-                        {
-                            Monitor.Wait(lockObject);
-                        }
-
-                    // Eseritzen da
-                        ipotxak[2].eserita = true;
-                        Aulkiak.aulkiakErabiliak++;
-                        Console.WriteLine($"Ipotxa {ipotxak[2].Id} eserita.");
-
-                        Monitor.PulseAll(lockObject); // Eserita dagoela esaten dio Edurnezuriri
-
-                        // Janaria zerbitzatuta egon arte itxaroten du
-                        while (!edurnezuri.zerbitzatuta)
-                        {
-                            Monitor.Wait(lockObject);
-                        }
-
-                        // Jan
-                        ipotxak[2].jan();
-
-                        // altxatu elta lanera doa
-                        ipotxak[2].eserita = false;
-                        Aulkiak.aulkiakErabiliak--;
-                        Console.WriteLine($"Ipotxa {ipotxak[2].Id} altxatu da.");
-
-                        ipotxak[2].lanean();
-
-                        Monitor.PulseAll(lockObject); // aulkia libre dagoela esaten dio Edurnezuriri
-                }
-            }
-        });
-        Task.Run(() =>
-        {
-            while (true)
-            {
-                lock (lockObject)
-                {
-                        // Aulki librea itxaroten du
-                        while (!Aulkiak.aulkiakLibre())
-                        {
-                            Monitor.Wait(lockObject);
-                        }
-
-                    // Eseritzen da
-                        ipotxak[3].eserita = true;
-                        Aulkiak.aulkiakErabiliak++;
-                        Console.WriteLine($"Ipotxa {ipotxak[3].Id} eserita.");
-
-                        Monitor.PulseAll(lockObject); // Eserita dagoela esaten dio Edurnezuriri
-
-                        // Janaria zerbitzatuta egon arte itxaroten du
-                        while (!edurnezuri.zerbitzatuta)
-                        {
-                            Monitor.Wait(lockObject);
-                        }
-
-                        // Jan
-                        ipotxak[3].jan();
-
-                        // altxatu elta lanera doa
-                        ipotxak[3].eserita = false;
-                        Aulkiak.aulkiakErabiliak--;
-                        Console.WriteLine($"Ipotxa {ipotxak[3].Id} altxatu da.");
-
-                        ipotxak[3].lanean();
-
-                        Monitor.PulseAll(lockObject); // aulkia libre dagoela esaten dio Edurnezuriri
-                }
-            }
-        });
-        Task.Run(() =>
-        {
-            while (true)
-            {
-                lock (lockObject)
-                {
-                        // Aulki librea itxaroten du
-                        while (!Aulkiak.aulkiakLibre())
-                        {
-                            Monitor.Wait(lockObject);
-                        }
-
-                    // Eseritzen da
-                        ipotxak[4].eserita = true;
-                        Aulkiak.aulkiakErabiliak++;
-                        Console.WriteLine($"Ipotxa {ipotxak[4].Id} eserita.");
-
-                        Monitor.PulseAll(lockObject); // Eserita dagoela esaten dio Edurnezuriri
-
-                        // Janaria zerbitzatuta egon arte itxaroten du
-                        while (!edurnezuri.zerbitzatuta)
-                        {
-                            Monitor.Wait(lockObject);
-                        }
-
-                        // Jan
-                        ipotxak[4].jan();
-
-                        // altxatu elta lanera doa
-                        ipotxak[4].eserita = false;
-                        Aulkiak.aulkiakErabiliak--;
-                        Console.WriteLine($"Ipotxa {ipotxak[4].Id} altxatu da.");
-
-                        ipotxak[4].lanean();
-
-                        Monitor.PulseAll(lockObject); // aulkia libre dagoela esaten dio Edurnezuriri
-                }
-            }
-        });
-        Task.Run(() =>
-        {
-            while (true)
-            {
-                lock (lockObject)
-                {
-                        // Aulki librea itxaroten du
-                        while (!Aulkiak.aulkiakLibre())
-                        {
-                            Monitor.Wait(lockObject);
-                        }
-
-                        // Eseritzen da
-                        ipotxak[5].eserita = true;
-                        Aulkiak.aulkiakErabiliak++;
-                        Console.WriteLine($"Ipotxa {ipotxak[5].Id} eserita.");
-
-                        Monitor.PulseAll(lockObject); // Eserita dagoela esaten dio Edurnezuriri
-
-                        // Janaria zerbitzatuta egon arte itxaroten du
-                        while (!edurnezuri.zerbitzatuta)
-                        {
-                            Monitor.Wait(lockObject);
-                        }
-
-                        // Jan
-                        ipotxak[5].jan();
-
-                        // altxatu elta lanera doa
-                        ipotxak[5].eserita = false;
-                        Aulkiak.aulkiakErabiliak--;
-                        Console.WriteLine($"Ipotxa {ipotxak[5].Id} altxatu da.");
-
-                        ipotxak[5].lanean();
-
-                        Monitor.PulseAll(lockObject); // aulkia libre dagoela esaten dio Edurnezuriri
-                }
-            }
-        });
-        Task.Run(() =>
-        {
-            while (true)
-            {
-                lock (lockObject)
-                {
-                        // Aulki librea itxaroten du
-                        while (!Aulkiak.aulkiakLibre())
-                        {
-                            Monitor.Wait(lockObject);
-                        }
-
-                    // Eseritzen da
-                        ipotxak[6].eserita = true;
-                        Aulkiak.aulkiakErabiliak++;
-                        Console.WriteLine($"Ipotxa {ipotxak[6].Id} eserita.");
-
-                        Monitor.PulseAll(lockObject); // Eserita dagoela esaten dio Edurnezuriri
-
-                        // Janaria zerbitzatuta egon arte itxaroten du
-                        while (!edurnezuri.zerbitzatuta)
-                        {
-                            Monitor.Wait(lockObject);
-                        }
-
-                        // Jan
-                        ipotxak[6].jan();
-
-                        // altxatu elta lanera doa
-                        ipotxak[6].eserita = false;
-                        Aulkiak.aulkiakErabiliak--;
-                        Console.WriteLine($"Ipotxa {ipotxak[6].Id} altxatu da.");
-
-                        ipotxak[6].lanean();
-
-                        Monitor.PulseAll(lockObject); // aulkia libre dagoela esaten dio Edurnezuriri
-                }
-            }
-        });
-        Task.Run(() =>
-        {
-            while (true)
-            {
-                lock (lockObject)
-                {
-                        // Aulki librea itxaroten du
-                        while (!Aulkiak.aulkiakLibre())
-                        {
-                            Monitor.Wait(lockObject);
-                        }
-
-                    // Eseritzen da
-                        ipotxak[0].eserita = true;
-                        Aulkiak.aulkiakErabiliak++;
-                        Console.WriteLine($"Ipotxa {ipotxak[0].Id} eserita.");
-
-                        Monitor.PulseAll(lockObject); // Eserita dagoela esaten dio Edurnezuriri
-
-                        // Janaria zerbitzatuta egon arte itxaroten du
-                        while (!edurnezuri.zerbitzatuta)
-                        {
-                            Monitor.Wait(lockObject);
-                        }
-
-                        // Jan
-                        ipotxak[0].jan();
-
-                        // altxatu elta lanera doa
-                        ipotxak[0].eserita = false;
-                        Aulkiak.aulkiakErabiliak--;
-                        Console.WriteLine($"Ipotxa {ipotxak[0].Id} altxatu da.");
-
-                        ipotxak[0].lanean();
-
-                        Monitor.PulseAll(lockObject); // aulkia libre dagoela esaten dio Edurnezuriri
-                }
-            }
-        });
+        }
     }
+
 }
