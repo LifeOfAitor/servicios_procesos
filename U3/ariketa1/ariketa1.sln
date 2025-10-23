@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36414.22 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ariketa1_bezeroa", "ariketa1_bezeroa.csproj", "{A8401FB3-8E5E-41FC-AB41-C19FCC5CB09E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ariketa1_zerbitzaria", "..\ariketa1_zerbitzaria\ariketa1_zerbitzaria.csproj", "{8BC08770-81AC-465C-8ABF-05FB334B8066}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A8401FB3-8E5E-41FC-AB41-C19FCC5CB09E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8401FB3-8E5E-41FC-AB41-C19FCC5CB09E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8401FB3-8E5E-41FC-AB41-C19FCC5CB09E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8401FB3-8E5E-41FC-AB41-C19FCC5CB09E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BC08770-81AC-465C-8ABF-05FB334B8066}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BC08770-81AC-465C-8ABF-05FB334B8066}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BC08770-81AC-465C-8ABF-05FB334B8066}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BC08770-81AC-465C-8ABF-05FB334B8066}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B2F318B8-7E0F-44FC-9560-335D7F796150}
+	EndGlobalSection
+EndGlobal

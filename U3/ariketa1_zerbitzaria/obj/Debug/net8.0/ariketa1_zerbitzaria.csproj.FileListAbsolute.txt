@@ -1,0 +1,15 @@
+D:\servicios_procesos\U3\ariketa1_zerbitzaria\bin\Debug\net8.0\ariketa1_zerbitzaria.exe
+D:\servicios_procesos\U3\ariketa1_zerbitzaria\bin\Debug\net8.0\ariketa1_zerbitzaria.deps.json
+D:\servicios_procesos\U3\ariketa1_zerbitzaria\bin\Debug\net8.0\ariketa1_zerbitzaria.runtimeconfig.json
+D:\servicios_procesos\U3\ariketa1_zerbitzaria\bin\Debug\net8.0\ariketa1_zerbitzaria.dll
+D:\servicios_procesos\U3\ariketa1_zerbitzaria\bin\Debug\net8.0\ariketa1_zerbitzaria.pdb
+D:\servicios_procesos\U3\ariketa1_zerbitzaria\obj\Debug\net8.0\ariketa1_zerbitzaria.GeneratedMSBuildEditorConfig.editorconfig
+D:\servicios_procesos\U3\ariketa1_zerbitzaria\obj\Debug\net8.0\ariketa1_zerbitzaria.AssemblyInfoInputs.cache
+D:\servicios_procesos\U3\ariketa1_zerbitzaria\obj\Debug\net8.0\ariketa1_zerbitzaria.AssemblyInfo.cs
+D:\servicios_procesos\U3\ariketa1_zerbitzaria\obj\Debug\net8.0\ariketa1_zerbitzaria.csproj.CoreCompileInputs.cache
+D:\servicios_procesos\U3\ariketa1_zerbitzaria\obj\Debug\net8.0\ariketa1_zerbitzaria.sourcelink.json
+D:\servicios_procesos\U3\ariketa1_zerbitzaria\obj\Debug\net8.0\ariketa1_zerbitzaria.dll
+D:\servicios_procesos\U3\ariketa1_zerbitzaria\obj\Debug\net8.0\refint\ariketa1_zerbitzaria.dll
+D:\servicios_procesos\U3\ariketa1_zerbitzaria\obj\Debug\net8.0\ariketa1_zerbitzaria.pdb
+D:\servicios_procesos\U3\ariketa1_zerbitzaria\obj\Debug\net8.0\ariketa1_zerbitzaria.genruntimeconfig.cache
+D:\servicios_procesos\U3\ariketa1_zerbitzaria\obj\Debug\net8.0\ref\ariketa1_zerbitzaria.dll

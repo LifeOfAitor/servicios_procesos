@@ -1,0 +1,17 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "ariketa1_bezeroa.csproj",
+        "Action": "Start",
+        "DebugTarget": "ariketa1"
+      },
+      {
+        "Path": "..\\ariketa1_zerbitzaria\\ariketa1_zerbitzaria.csproj",
+        "Action": "Start",
+        "DebugTarget": "ariketa1_zerbitzaria"
+      }
+    ]
+  }
+]
