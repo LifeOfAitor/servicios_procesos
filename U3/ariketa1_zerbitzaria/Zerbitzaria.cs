@@ -15,7 +15,6 @@ class Zerbitzaria
         try
         {
             listener = new TcpListener(IPAddress.Any, PORT);
-            listener.Server.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
             listener.Start();
             Console.WriteLine("-----ZERBITZARIA-----");
             Console.WriteLine($"Zerbitzaria entzuten dago: port {PORT}");
@@ -41,14 +40,18 @@ class Zerbitzaria
                     {
                         Console.WriteLine($"Jasotako mezua: {line}");
 
-                        if (line.Equals("AMAIERA", StringComparison.OrdinalIgnoreCase))
+                        if (line.ToUpper().Equals("AMAIERA"))
                         {
                             writer.WriteLine("Agur!");
                             break;
                         }
+                        else
+                        {
+                            int vokalak = KalkulatuBokalak(line);
+                            writer.WriteLine($"Jasotako mezua: {line} | Vokal kopurua: {vokalak}");
+                        }
 
-                        int vokalak = KalkulatuBokalak(line);
-                        writer.WriteLine($"Jasotako mezua: {line} | Vokal kopurua: {vokalak}");
+                            
                     }
 
                     Console.WriteLine("Bezeroarekin konexioa amaitu da.");

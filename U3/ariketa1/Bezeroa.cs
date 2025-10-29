@@ -5,7 +5,7 @@ using System.Text;
 
 class Bezeroa
 {
-    const string SERVER = "127.0.0.1"; // edo zerbitzariaren IP helbidea
+    const string SERVER = "127.0.0.1";
     const int PORT = 5000;
 
     static void Main()
@@ -40,7 +40,7 @@ class Bezeroa
 
                 Console.WriteLine("Server-etik: " + response);
 
-                if (line.ToUpper().Equals("AMAIERA", StringComparison.OrdinalIgnoreCase))
+                if (line.ToUpper().Equals("AMAIERA"))
                     break;
             }
         }
