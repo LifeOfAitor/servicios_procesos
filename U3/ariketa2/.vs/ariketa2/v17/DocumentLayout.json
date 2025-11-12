@@ -1,0 +1,61 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\servicios_procesos\\U3\\ariketa2\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{697E3E34-8327-4186-8334-27F0C3DE463C}|..\\ariketa2_zerbitzaria\\ariketa2_zerbitzaria.csproj|d:\\servicios_procesos\\u3\\ariketa2_zerbitzaria\\zerbitzaria.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15A3A73F-BA92-4AB9-A113-6483DFED62D5}|ariketa2.csproj|d:\\servicios_procesos\\u3\\ariketa2\\bezeroak.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15A3A73F-BA92-4AB9-A113-6483DFED62D5}|ariketa2.csproj|solutionrelative:bezeroak.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 109,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "zerbitzaria.cs",
+              "DocumentMoniker": "D:\\servicios_procesos\\U3\\ariketa2_zerbitzaria\\zerbitzaria.cs",
+              "RelativeDocumentMoniker": "..\\ariketa2_zerbitzaria\\zerbitzaria.cs",
+              "ToolTip": "D:\\servicios_procesos\\U3\\ariketa2_zerbitzaria\\zerbitzaria.cs",
+              "RelativeToolTip": "..\\ariketa2_zerbitzaria\\zerbitzaria.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAA1wDMAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-05T08:19:40.203Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "bezeroak.cs",
+              "DocumentMoniker": "D:\\servicios_procesos\\U3\\ariketa2\\bezeroak.cs",
+              "RelativeDocumentMoniker": "bezeroak.cs",
+              "ToolTip": "D:\\servicios_procesos\\U3\\ariketa2\\bezeroak.cs",
+              "RelativeToolTip": "bezeroak.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAA+AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-05T08:18:33.864Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
