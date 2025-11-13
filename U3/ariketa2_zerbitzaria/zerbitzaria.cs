@@ -1,79 +1,155 @@
-﻿using System;
+﻿using ariketa2_zerbitzaria;
+using System;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
+using System.Threading;
 
-class Zerbitzaria
+namespace ariketa2_zerbitzaria
 {
-    const int PORT = 5000;
-
-    static void Main()
+    public class TCPServidor
     {
-        TcpListener listener = null;
-
-        try
+        private static bool jokuaMartxan = true;
+        private static List<BezeroInformazioa> bezeroak = new List<BezeroInformazioa>();
+        private static object lockObject = new object();
+        private static int zenbakia;
+        public static void Main(string[] args)
         {
-            listener = new TcpListener(IPAddress.Any, PORT);
-            listener.Start();
-            Console.WriteLine("-----ZERBITZARIA-----");
-            Console.WriteLine($"Zerbitzaria entzuten dago: port {PORT}");
+            string servidor = "127.0.0.1";
+            IPAddress ipserver = IPAddress.Parse(servidor);
+            int port = 5000;
+
+            TcpListener listener = new TcpListener(ipserver, port);
+            Console.WriteLine("Zerbitzaria martxan dago {0}:{1}", servidor, port);
+            listener.Start(Jokua.JOKALARIAK);
+
+            //jokua sortu eta zenbakia gorde
+            Jokua jokua = new Jokua();
+            zenbakia = jokua.zenbakia;
+            Console.WriteLine("Sortutako zenbakia: " + zenbakia);
 
             while (true)
             {
-                //handle bezeroak
-                TcpClient client = listener.AcceptTcpClient();
-                Console.WriteLine($"Bezero bat konektatu da: {client.Client.RemoteEndPoint}");
-                Task t = Task.Run(() => HandleClient(client));
+                TcpClient socketCliente = listener.AcceptTcpClient();
+                lock (lockObject)
+                {
+                    if (bezeroak.Count >= Jokua.JOKALARIAK)
+                    {
+                        Console.WriteLine("Bezero gehiegi konektatuta. Ezin da konektatu.");
+                        socketCliente.Close();
+                        continue;
+                    }
+                }
+
+                Console.WriteLine("Bezero bat konektatuta");
+                Thread t = new Thread(() => Datuak(socketCliente));
+                t.Start();
             }
         }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Errorea zerbitzaria abiaraztean: {ex.Message}");
-        }
-        finally
-        {
-            listener?.Stop();
-        }
-    }
-    static void HandleClient(TcpClient client)
-    {
-        NetworkStream ns = null;
-        StreamReader reader = null;
-        StreamWriter writer = null;
 
-        try
+        private static void Datuak(TcpClient socket)
         {
-            ns = client.GetStream();
-            reader = new StreamReader(ns, Encoding.UTF8);
-            writer = new StreamWriter(ns, Encoding.UTF8);
-            writer.AutoFlush = true;
-
-            writer.WriteLine("Kaixo! Zerbitzarira konektatuta.");
-
-            string line;
-            while ((line = reader.ReadLine()) != null)
+            BezeroInformazioa bezeroInfo = new BezeroInformazioa
             {
-                Console.WriteLine($"[{client.Client.RemoteEndPoint}] => {line}");
-                writer.WriteLine($"Echo: {line}");
+                Socket = socket
+            };
+            try
+            {
+                using NetworkStream network = socket.GetStream();
+                using StreamWriter writer = new StreamWriter(network) 
+                { AutoFlush = true };
+                using StreamReader reader = new StreamReader(network);
+
+                string mezua = ("Konexioa eginda, 0-100 arteko zenbakia asmatu behar duzu!");
+                writer.WriteLine(mezua);
+
+                lock (lockObject)
+                {
+                    bezeroak.Add(bezeroInfo);
+                }
+
+                patidaJolastu(socket, reader, writer, bezeroInfo);
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Bezeroarekin errorea: " + e.Message);
+            }
+            finally
+            {
+                Console.WriteLine($"{bezeroInfo.Socket} bezeroa deskonektatu da.");
+                socket.Close();
+                lock (lockObject)
+                {
+                    bezeroak.Remove(bezeroInfo);
+                }
             }
         }
-        catch (IOException)
+
+        private static void patidaJolastu(TcpClient socket, StreamReader reader, StreamWriter writer, BezeroInformazioa bezeroInfo)
         {
-            Console.WriteLine($"Bezeroa deskonektatu da: {client.Client.RemoteEndPoint}");
+            while (true)
+            {
+                string line = reader.ReadLine();
+                if (line == null) break;
+                if (line.ToUpper().Equals("AMAIERA"))
+                {
+                    writer.WriteLine("Jokoa amaitu da. Eskerrik asko jolasteagatik!");
+                    break;
+                }
+                if (int.TryParse(line, out int guess))
+                {
+                    lock (lockObject)
+                    {
+                        if (!jokuaMartxan)
+                        {
+                            writer.WriteLine("Jokoa amaitu da. Eskerrik asko jolasteagatik!");
+                            break;
+                        }
+                        bezeroInfo.sahiakerak++;
+                        if (guess < zenbakia)
+                        {
+                            writer.WriteLine("Handiagoa");
+                        }
+                        else if (guess > zenbakia)
+                        {
+                            writer.WriteLine("Txikiagoa");
+                        }
+                        else
+                        {
+                            jokuaMartxan = false;
+                            writer.WriteLine($"Zorionak {bezeroInfo.Socket}! Asmatu duzu {bezeroInfo.sahiakerak} saiakeratan.");
+                            NotifikatuBesteak($"{bezeroInfo.Socket} irabazi du jokoa!");
+                            ErakutsiEstadistikak();
+                            break;
+                        }
+                    }
+                        
+                }
+            }
         }
-        catch (Exception ex)
+        private static void ErakutsiEstadistikak()
         {
-            Console.WriteLine($"Errorea bezeroarekin: {ex.Message}");
+            Console.WriteLine("Jokoaren amaiera. Bezeroen estatistikak:");
+            foreach (var bezero in bezeroak)
+            {
+                Console.WriteLine($"{bezero.Socket} - Saiakerak: {bezero.sahiakerak}");
+            }
         }
-        finally
+        private static void NotifikatuBesteak(string mezua)
         {
-            // Cerrar en orden inverso a la apertura
-            if (writer != null) writer.Close();
-            if (reader != null) reader.Close();
-            if (ns != null) ns.Close();
-            client.Close();
+            lock (lockObject)
+            {
+                foreach (var b in bezeroak)
+                {
+                    try
+                    {
+                        StreamWriter w = new StreamWriter(b.Socket.GetStream()) { AutoFlush = true };
+                        w.WriteLine(mezua);
+                    }
+                    catch { }
+                }
+            }
         }
     }
-
 }
