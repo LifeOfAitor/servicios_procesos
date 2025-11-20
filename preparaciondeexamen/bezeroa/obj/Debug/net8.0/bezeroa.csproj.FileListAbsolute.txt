@@ -1,0 +1,15 @@
+D:\servicios_procesos\preparaciondeexamen\bezeroa\bin\Debug\net8.0\bezeroa.exe
+D:\servicios_procesos\preparaciondeexamen\bezeroa\bin\Debug\net8.0\bezeroa.deps.json
+D:\servicios_procesos\preparaciondeexamen\bezeroa\bin\Debug\net8.0\bezeroa.runtimeconfig.json
+D:\servicios_procesos\preparaciondeexamen\bezeroa\bin\Debug\net8.0\bezeroa.dll
+D:\servicios_procesos\preparaciondeexamen\bezeroa\bin\Debug\net8.0\bezeroa.pdb
+D:\servicios_procesos\preparaciondeexamen\bezeroa\obj\Debug\net8.0\bezeroa.GeneratedMSBuildEditorConfig.editorconfig
+D:\servicios_procesos\preparaciondeexamen\bezeroa\obj\Debug\net8.0\bezeroa.AssemblyInfoInputs.cache
+D:\servicios_procesos\preparaciondeexamen\bezeroa\obj\Debug\net8.0\bezeroa.AssemblyInfo.cs
+D:\servicios_procesos\preparaciondeexamen\bezeroa\obj\Debug\net8.0\bezeroa.csproj.CoreCompileInputs.cache
+D:\servicios_procesos\preparaciondeexamen\bezeroa\obj\Debug\net8.0\bezeroa.sourcelink.json
+D:\servicios_procesos\preparaciondeexamen\bezeroa\obj\Debug\net8.0\bezeroa.dll
+D:\servicios_procesos\preparaciondeexamen\bezeroa\obj\Debug\net8.0\refint\bezeroa.dll
+D:\servicios_procesos\preparaciondeexamen\bezeroa\obj\Debug\net8.0\bezeroa.pdb
+D:\servicios_procesos\preparaciondeexamen\bezeroa\obj\Debug\net8.0\bezeroa.genruntimeconfig.cache
+D:\servicios_procesos\preparaciondeexamen\bezeroa\obj\Debug\net8.0\ref\bezeroa.dll

@@ -1,0 +1,67 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\servicios_procesos\\preparaciondeexamen\\examen_prestatu_zerbitzaria\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{E3631565-7727-48E3-86DF-78D93B64AFFA}|examen_prestatu_zerbitzaria.csproj|d:\\servicios_procesos\\preparaciondeexamen\\examen_prestatu_zerbitzaria\\zerbitzaria.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E3631565-7727-48E3-86DF-78D93B64AFFA}|examen_prestatu_zerbitzaria.csproj|solutionrelative:zerbitzaria.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{201936AF-4748-4393-A2D9-3565F612EC0D}|..\\bezeroa\\bezeroa.csproj|d:\\servicios_procesos\\preparaciondeexamen\\bezeroa\\bezeroa.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Zerbitzaria.cs",
+              "DocumentMoniker": "D:\\servicios_procesos\\preparaciondeexamen\\examen_prestatu_zerbitzaria\\Zerbitzaria.cs",
+              "RelativeDocumentMoniker": "Zerbitzaria.cs",
+              "ToolTip": "D:\\servicios_procesos\\preparaciondeexamen\\examen_prestatu_zerbitzaria\\Zerbitzaria.cs",
+              "RelativeToolTip": "Zerbitzaria.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAQwBoAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-20T11:18:46.97Z",
+              "EditorCaption": ""
+            }
+          ]
+        },
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Bezeroa.cs",
+              "DocumentMoniker": "D:\\servicios_procesos\\preparaciondeexamen\\bezeroa\\Bezeroa.cs",
+              "RelativeDocumentMoniker": "..\\bezeroa\\Bezeroa.cs",
+              "ToolTip": "D:\\servicios_procesos\\preparaciondeexamen\\bezeroa\\Bezeroa.cs",
+              "RelativeToolTip": "..\\bezeroa\\Bezeroa.cs",
+              "ViewState": "AgIAABYAAAAAAAAAAAAgwCwAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-20T11:18:31.59Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

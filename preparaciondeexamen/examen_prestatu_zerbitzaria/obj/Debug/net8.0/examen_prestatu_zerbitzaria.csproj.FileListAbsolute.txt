@@ -1,0 +1,15 @@
+D:\servicios_procesos\preparaciondeexamen\examen_prestatu_zerbitzaria\bin\Debug\net8.0\examen_prestatu_zerbitzaria.exe
+D:\servicios_procesos\preparaciondeexamen\examen_prestatu_zerbitzaria\bin\Debug\net8.0\examen_prestatu_zerbitzaria.deps.json
+D:\servicios_procesos\preparaciondeexamen\examen_prestatu_zerbitzaria\bin\Debug\net8.0\examen_prestatu_zerbitzaria.runtimeconfig.json
+D:\servicios_procesos\preparaciondeexamen\examen_prestatu_zerbitzaria\bin\Debug\net8.0\examen_prestatu_zerbitzaria.dll
+D:\servicios_procesos\preparaciondeexamen\examen_prestatu_zerbitzaria\bin\Debug\net8.0\examen_prestatu_zerbitzaria.pdb
+D:\servicios_procesos\preparaciondeexamen\examen_prestatu_zerbitzaria\obj\Debug\net8.0\examen_prestatu_zerbitzaria.GeneratedMSBuildEditorConfig.editorconfig
+D:\servicios_procesos\preparaciondeexamen\examen_prestatu_zerbitzaria\obj\Debug\net8.0\examen_prestatu_zerbitzaria.AssemblyInfoInputs.cache
+D:\servicios_procesos\preparaciondeexamen\examen_prestatu_zerbitzaria\obj\Debug\net8.0\examen_prestatu_zerbitzaria.AssemblyInfo.cs
+D:\servicios_procesos\preparaciondeexamen\examen_prestatu_zerbitzaria\obj\Debug\net8.0\examen_prestatu_zerbitzaria.csproj.CoreCompileInputs.cache
+D:\servicios_procesos\preparaciondeexamen\examen_prestatu_zerbitzaria\obj\Debug\net8.0\examen_prestatu_zerbitzaria.sourcelink.json
+D:\servicios_procesos\preparaciondeexamen\examen_prestatu_zerbitzaria\obj\Debug\net8.0\examen_prestatu_zerbitzaria.dll
+D:\servicios_procesos\preparaciondeexamen\examen_prestatu_zerbitzaria\obj\Debug\net8.0\refint\examen_prestatu_zerbitzaria.dll
+D:\servicios_procesos\preparaciondeexamen\examen_prestatu_zerbitzaria\obj\Debug\net8.0\examen_prestatu_zerbitzaria.pdb
+D:\servicios_procesos\preparaciondeexamen\examen_prestatu_zerbitzaria\obj\Debug\net8.0\examen_prestatu_zerbitzaria.genruntimeconfig.cache
+D:\servicios_procesos\preparaciondeexamen\examen_prestatu_zerbitzaria\obj\Debug\net8.0\ref\examen_prestatu_zerbitzaria.dll
