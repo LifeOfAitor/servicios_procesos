@@ -1,0 +1,15 @@
+D:\servicios_procesos\U3\ariketa3_bezeroa\obj\Debug\net8.0\ariketa3_bezeroa.GeneratedMSBuildEditorConfig.editorconfig
+D:\servicios_procesos\U3\ariketa3_bezeroa\obj\Debug\net8.0\ariketa3_bezeroa.AssemblyInfoInputs.cache
+D:\servicios_procesos\U3\ariketa3_bezeroa\obj\Debug\net8.0\ariketa3_bezeroa.AssemblyInfo.cs
+D:\servicios_procesos\U3\ariketa3_bezeroa\obj\Debug\net8.0\ariketa3_bezeroa.csproj.CoreCompileInputs.cache
+D:\servicios_procesos\U3\ariketa3_bezeroa\obj\Debug\net8.0\ariketa3_bezeroa.sourcelink.json
+D:\servicios_procesos\U3\ariketa3_bezeroa\bin\Debug\net8.0\ariketa3_bezeroa.exe
+D:\servicios_procesos\U3\ariketa3_bezeroa\bin\Debug\net8.0\ariketa3_bezeroa.deps.json
+D:\servicios_procesos\U3\ariketa3_bezeroa\bin\Debug\net8.0\ariketa3_bezeroa.runtimeconfig.json
+D:\servicios_procesos\U3\ariketa3_bezeroa\bin\Debug\net8.0\ariketa3_bezeroa.dll
+D:\servicios_procesos\U3\ariketa3_bezeroa\bin\Debug\net8.0\ariketa3_bezeroa.pdb
+D:\servicios_procesos\U3\ariketa3_bezeroa\obj\Debug\net8.0\ariketa3_bezeroa.dll
+D:\servicios_procesos\U3\ariketa3_bezeroa\obj\Debug\net8.0\refint\ariketa3_bezeroa.dll
+D:\servicios_procesos\U3\ariketa3_bezeroa\obj\Debug\net8.0\ariketa3_bezeroa.pdb
+D:\servicios_procesos\U3\ariketa3_bezeroa\obj\Debug\net8.0\ariketa3_bezeroa.genruntimeconfig.cache
+D:\servicios_procesos\U3\ariketa3_bezeroa\obj\Debug\net8.0\ref\ariketa3_bezeroa.dll

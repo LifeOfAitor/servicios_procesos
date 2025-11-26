@@ -33,7 +33,6 @@ namespace examen_prestatu_zerbitzaria
                     sw.WriteLine(bidaltzeko); // zerbitzariai bidali mezua
 
                     //zerbitzaritik jasotzeko mezua
-                    Console.WriteLine();
                     string jasotakoMezua = sr.ReadLine();
                     Console.WriteLine($"Zerbitzariaren mezua: {jasotakoMezua}");
                 }

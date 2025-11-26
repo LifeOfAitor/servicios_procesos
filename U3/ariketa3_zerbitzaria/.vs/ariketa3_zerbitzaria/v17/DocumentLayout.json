@@ -3,8 +3,11 @@
   "WorkspaceRootPath": "D:\\servicios_procesos\\U3\\ariketa3_zerbitzaria\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3BCD425B-130A-47E1-8918-CB1AA4C0965F}|ariketa3_zerbitzaria.csproj|d:\\servicios_procesos\\u3\\ariketa3_zerbitzaria\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3BCD425B-130A-47E1-8918-CB1AA4C0965F}|ariketa3_zerbitzaria.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3BCD425B-130A-47E1-8918-CB1AA4C0965F}|ariketa3_zerbitzaria.csproj|d:\\servicios_procesos\\u3\\ariketa3_zerbitzaria\\zerbitzaria.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3BCD425B-130A-47E1-8918-CB1AA4C0965F}|ariketa3_zerbitzaria.csproj|solutionrelative:zerbitzaria.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{86B22C80-FB37-E0BB-04EE-509FF978441A}|..\\ariketa3_bezeroa\\ariketa3_bezeroa.csproj|d:\\servicios_procesos\\u3\\ariketa3_bezeroa\\bezeroa.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -27,14 +30,27 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Program.cs",
-              "DocumentMoniker": "D:\\servicios_procesos\\U3\\ariketa3_zerbitzaria\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "D:\\servicios_procesos\\U3\\ariketa3_zerbitzaria\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA==",
+              "Title": "zerbitzaria.cs",
+              "DocumentMoniker": "D:\\servicios_procesos\\U3\\ariketa3_zerbitzaria\\zerbitzaria.cs",
+              "RelativeDocumentMoniker": "zerbitzaria.cs",
+              "ToolTip": "D:\\servicios_procesos\\U3\\ariketa3_zerbitzaria\\zerbitzaria.cs",
+              "RelativeToolTip": "zerbitzaria.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFEAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-13T08:02:35.12Z",
+              "WhenOpened": "2025-11-13T09:52:47.608Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "bezeroa.cs",
+              "DocumentMoniker": "D:\\servicios_procesos\\U3\\ariketa3_bezeroa\\bezeroa.cs",
+              "RelativeDocumentMoniker": "..\\ariketa3_bezeroa\\bezeroa.cs",
+              "ToolTip": "D:\\servicios_procesos\\U3\\ariketa3_bezeroa\\bezeroa.cs",
+              "RelativeToolTip": "..\\ariketa3_bezeroa\\bezeroa.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-13T08:57:21.617Z",
               "EditorCaption": ""
             }
           ]

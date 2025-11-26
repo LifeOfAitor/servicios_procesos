@@ -21,7 +21,7 @@ namespace ariketa2_zerbitzaria
 
             TcpListener listener = new TcpListener(ipserver, port);
             Console.WriteLine("Zerbitzaria martxan dago {0}:{1}", servidor, port);
-            listener.Start(Jokua.JOKALARIAK);
+            listener.Start();
 
             //jokua sortu eta zenbakia gorde
             Jokua jokua = new Jokua();
@@ -33,17 +33,18 @@ namespace ariketa2_zerbitzaria
                 TcpClient socketCliente = listener.AcceptTcpClient();
                 lock (lockObject)
                 {
-                    if (bezeroak.Count >= Jokua.JOKALARIAK)
+                    if (bezeroak.Count >= 1)
                     {
                         Console.WriteLine("Bezero gehiegi konektatuta. Ezin da konektatu.");
                         socketCliente.Close();
                         continue;
                     }
-                }
-
-                Console.WriteLine("Bezero bat konektatuta");
+                    Console.WriteLine("Bezero bat konektatuta");
                 Thread t = new Thread(() => Datuak(socketCliente));
                 t.Start();
+                }
+
+                
             }
         }
 
