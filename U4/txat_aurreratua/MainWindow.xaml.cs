@@ -38,11 +38,11 @@ namespace txat_aurreratua
         {
             try
             {
-                new Thread(() => hasiZerbitzaria()).Start();
+                Task.Run(async () => await hasiZerbitzaria());
                 server_log_textblock.Text += "Zerbitzaria martxan jartzen ari da... \n";
                 btn_martxan.IsEnabled = false;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 if (server != null)
                 {
@@ -59,43 +59,40 @@ namespace txat_aurreratua
         }
 
         ////////////Zerbitzariaren funtzioak////////////////
-        public void hasiZerbitzaria()
+        public async Task hasiZerbitzaria()
         {
             server = new TcpListener(IPAddress.Parse(ipadress), portua);
             server.Start();
-            server_log_textblock.Dispatcher.Invoke(() => {
-                server_log_textblock.Text += "Zerbitzaria martxan dago. \n";
-            });
-            btn_itzali.Dispatcher.Invoke(() => btn_itzali.IsEnabled = true);
-            
+            server_log_textblock.Dispatcher.BeginInvoke(() =>
+                server_log_textblock.Text += "Zerbitzaria martxan dago. \n");
+            btn_itzali.Dispatcher.BeginInvoke(() => btn_itzali.IsEnabled = true);
+
             while (true)
             {
+                TcpClient c;
                 try
                 {
-                    TcpClient c = server.AcceptTcpClient();
-                    lock (lockObj)
-                    {
-                        if (bezeroak.Count >= 5)
-                        {
-                            c.Close();
-                            server_log_textblock.Dispatcher.Invoke(() =>
-                            {
-                                server_log_textblock.Text += "Bezero limitea iritsita, ezin da gehiago onartu";
-                            });
-                            continue;
-                        }
-                    }
-                    new Task(() => BezeroarekinGauzakEgin(c)).Start();
+                    c = await server.AcceptTcpClientAsync();
                 }
-                catch (SocketException ex)
+                catch (SocketException)
                 {
-                    // zerbitzaria gelditzen denean
-                    server_log_textblock.Dispatcher.Invoke(() =>
-                    {
-                        server_log_textblock.Text += "Zerbitzaria gelditu da. \n";
-                    });
+                    server_log_textblock.Dispatcher.BeginInvoke(() =>
+                        server_log_textblock.Text += "Zerbitzaria gelditu da. \n");
                     break;
                 }
+
+                lock (lockObj)
+                {
+                    if (bezeroak.Count >= 5)
+                    {
+                        c.Close();
+                        server_log_textblock.Dispatcher.BeginInvoke(() =>
+                            server_log_textblock.Text += "Bezero limitea iritsita, ezin da gehiago onartu");
+                        continue;
+                    }
+                }
+
+                _ = Task.Run(() => BezeroarekinGauzakEgin(c));
             }
         }
         public void itxiZerbitzaria()
@@ -105,44 +102,54 @@ namespace txat_aurreratua
             btn_itzali.IsEnabled = false;
         }
 
-        public void BezeroarekinGauzakEgin(TcpClient bezeroarenTCP)
+        public async Task BezeroarekinGauzakEgin(TcpClient bezeroarenTCP)
         {
             using NetworkStream ns = bezeroarenTCP.GetStream();
             using StreamWriter sw = new StreamWriter(ns) { AutoFlush = true };
             using StreamReader sr = new StreamReader(ns);
-            // bezero berria (Objetua) sortu
-            string izena = sr.ReadLine();
+
+            string izena = await sr.ReadLineAsync();
             BezeroObjetua bezeroa = new BezeroObjetua(izena, bezeroarenTCP);
-            lock (lockObj)
-            {
-                bezeroak.Add(bezeroa);
-            }
+            lock (lockObj) bezeroak.Add(bezeroa);
+
             string mezua = $"{bezeroa.izena} konektatu da zerbitzarira";
-            sw.WriteLine(mezua);
-            Console.WriteLine(mezua);
+            await sw.WriteLineAsync(mezua);
+            chat_log_textblock.Dispatcher.BeginInvoke(() =>
+                        server_log_textblock.Text += $"{mezua} \n");
 
             try
             {
                 while (true)
                 {
-                    //bezerotik jasotzeko mezua
-                    string jasotakoMezua = sr.ReadLine();
-                    chat_log_textblock.Text += $"{bezeroa.izena} mezua: {jasotakoMezua} \n";
-                    sw.WriteLine("Proba"); // bezeroari bidali mezua
+                    string jasotakoMezua = await sr.ReadLineAsync();
+                    if (jasotakoMezua == null) throw new IOException("Client disconnected");
+
+                    chat_log_textblock.Dispatcher.BeginInvoke(() =>
+                        chat_log_textblock.Text += $"{bezeroa.izena} mezua: {jasotakoMezua} \n");
+
+                    await sw.WriteLineAsync("Proba");
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 ns.Close();
-                sw.Close();
-                sr.Close();
                 bezeroarenTCP.Close();
-                server_log_textblock.Text += $"{bezeroa.izena} deskonektatu da \n";
-                lock (lockObj)
-                {
-                    bezeroak.Remove(bezeroa);
-                }
+
+                server_log_textblock.Dispatcher.BeginInvoke(() =>
+                    server_log_textblock.Text += $"{bezeroa.izena} deskonektatu da \n");
+
+                lock (lockObj) bezeroak.Remove(bezeroa);
             }
+        }
+
+        private void server_log_textblock_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            server_log_textblock.ScrollToEnd();
+        }
+
+        private void chat_log_textblock_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            chat_log_textblock.ScrollToEnd();
         }
     }
 }

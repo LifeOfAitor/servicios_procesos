@@ -30,7 +30,7 @@
                  TextWrapping="Wrap" 
                  VerticalAlignment="Top" 
                  Height="66" 
-                 Width="349"/>
+                 Width="349" TextChanged="server_log_textblock_TextChanged"/>
         <TextBox x:Name="chat_log_textblock" 
                  IsReadOnly="True" 
                  HorizontalAlignment="Left" 
@@ -38,7 +38,7 @@
                  TextWrapping="Wrap" 
                  VerticalAlignment="Top"
                  Height="210" 
-                 Width="349"/>
+                 Width="349" TextChanged="chat_log_textblock_TextChanged"/>
         <Label Content="Bezeroak" 
                HorizontalAlignment="Left" 
                Margin="369,204,0,0" 
