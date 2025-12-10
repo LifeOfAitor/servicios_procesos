@@ -18,31 +18,27 @@ namespace txat_aurreratua
     public partial class MainWindow : Window
     {
         private const string ipadress = "127.0.0.1";
-        private static object lockObj = new object();
+        private object lockObj = new object();
         private const int portua = 5000;
-        private static List<BezeroObjetua> bezeroak = new();
-        private static TcpListener server = null;
+        private List<BezeroObjetua> bezeroak = new();
+        private TcpListener server = null;
+        private bool zerbitzariaMartxan = false;
 
-        
+
         public MainWindow()
         {
             InitializeComponent();
-        }
-
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
         }
 
         private void btn_martxan_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                Task.Run(async () => await hasiZerbitzaria());
+                new Thread(() => hasiZerbitzaria()).Start();
                 server_log_textblock.Text += "Zerbitzaria martxan jartzen ari da... \n";
                 btn_martxan.IsEnabled = false;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 if (server != null)
                 {
@@ -50,7 +46,7 @@ namespace txat_aurreratua
                     server_log_textblock.Text += "Errorea: Zerbitzaria itxi da. \n";
                 }
             }
-            
+
         }
 
         private void btn_itzali_Click(object sender, RoutedEventArgs e)
@@ -59,97 +55,136 @@ namespace txat_aurreratua
         }
 
         ////////////Zerbitzariaren funtzioak////////////////
-        public async Task hasiZerbitzaria()
+        public void hasiZerbitzaria()
         {
             server = new TcpListener(IPAddress.Parse(ipadress), portua);
             server.Start();
-            server_log_textblock.Dispatcher.BeginInvoke(() =>
-                server_log_textblock.Text += "Zerbitzaria martxan dago. \n");
-            btn_itzali.Dispatcher.BeginInvoke(() => btn_itzali.IsEnabled = true);
+            zerbitzariaMartxan = true;
 
-            while (true)
+            idatziServerMezuak("Zerbitzaria martxan dago. \n");
+
+            btn_itzali.Dispatcher.Invoke(() => btn_itzali.IsEnabled = true);
+
+            Thread t = new Thread(LehenHaria);
+            t.IsBackground = true;
+            t.Start();
+        }
+
+        private void LehenHaria()
+        {
+            try
             {
-                TcpClient c;
-                try
+                while (zerbitzariaMartxan)
                 {
-                    c = await server.AcceptTcpClientAsync();
-                }
-                catch (SocketException)
-                {
-                    server_log_textblock.Dispatcher.BeginInvoke(() =>
-                        server_log_textblock.Text += "Zerbitzaria gelditu da. \n");
-                    break;
-                }
-
-                lock (lockObj)
-                {
-                    if (bezeroak.Count >= 5)
+                    TcpClient c = server.AcceptTcpClient();
+                    lock (lockObj)
                     {
-                        c.Close();
-                        server_log_textblock.Dispatcher.BeginInvoke(() =>
-                            server_log_textblock.Text += "Bezero limitea iritsita, ezin da gehiago onartu");
-                        continue;
+                        if (bezeroak.Count >= 5)
+                        {
+                            c.Close();
+                            idatziServerMezuak("Bezero limitea iritsita, ezin da gehiago onartu \n");
+                            continue;
+                        }
                     }
+                    new Thread(() => BezeroarekinGauzakEgin(c)).Start();
                 }
-
-                _ = Task.Run(() => BezeroarekinGauzakEgin(c));
+            }
+            catch (SocketException)
+            {
+                // Normala da Stop() deitzen dugunean
+                idatziServerMezuak("Zerbitzaria gelditu da \n");
             }
         }
         public void itxiZerbitzaria()
         {
-            server.Stop(); // honek hasiZerbitzariaren catch blokea exekutatuko du
+            server.Stop();
+            zerbitzariaMartxan = false;
             btn_martxan.IsEnabled = true;
             btn_itzali.IsEnabled = false;
         }
 
-        public async Task BezeroarekinGauzakEgin(TcpClient bezeroarenTCP)
+        public void BezeroarekinGauzakEgin(TcpClient bezeroarenTCP)
         {
-            using NetworkStream ns = bezeroarenTCP.GetStream();
-            using StreamWriter sw = new StreamWriter(ns) { AutoFlush = true };
-            using StreamReader sr = new StreamReader(ns);
-
-            string izena = await sr.ReadLineAsync();
-            BezeroObjetua bezeroa = new BezeroObjetua(izena, bezeroarenTCP);
-            lock (lockObj) bezeroak.Add(bezeroa);
-
+            BezeroObjetua bezeroa = new BezeroObjetua(bezeroarenTCP);
+            lock (lockObj)
+            {
+                bezeroak.Add(bezeroa);
+            }
+            // bezero berria (Objetua) sortu
+            string izena = bezeroa.sr.ReadLine();
+            bezeroa.setIzena(izena);
             string mezua = $"{bezeroa.izena} konektatu da zerbitzarira";
-            await sw.WriteLineAsync(mezua);
-            chat_log_textblock.Dispatcher.BeginInvoke(() =>
-                        server_log_textblock.Text += $"{mezua} \n");
+            bezeroa.sw.WriteLine(mezua);
+            idatziServerMezuak(mezua);
 
             try
             {
-                while (true)
+                while (zerbitzariaMartxan)
                 {
-                    string jasotakoMezua = await sr.ReadLineAsync();
-                    if (jasotakoMezua == null) throw new IOException("Client disconnected");
-
-                    chat_log_textblock.Dispatcher.BeginInvoke(() =>
-                        chat_log_textblock.Text += $"{bezeroa.izena} mezua: {jasotakoMezua} \n");
-
-                    await sw.WriteLineAsync("Proba");
+                    //bezerotik jasotzeko mezua
+                    string jasotakoMezua = bezeroa.sr.ReadLine();
+                    mezua = $"{bezeroa.izena}: {jasotakoMezua}";
+                    idatziTxatMezuak(mezua);
+                    bezeroeiBidali(mezua);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                ns.Close();
+                bezeroa.ns.Close();
+                bezeroa.sw.Close();
+                bezeroa.sr.Close();
                 bezeroarenTCP.Close();
-
-                server_log_textblock.Dispatcher.BeginInvoke(() =>
-                    server_log_textblock.Text += $"{bezeroa.izena} deskonektatu da \n");
-
-                lock (lockObj) bezeroak.Remove(bezeroa);
+                idatziServerMezuak($"{bezeroa.izena} deskonektatu da");
+                lock (lockObj)
+                {
+                    bezeroak.Remove(bezeroa);
+                }
             }
         }
 
-        private void server_log_textblock_TextChanged(object sender, TextChangedEventArgs e)
+        private void bezeroeiBidali(string mezua)
         {
-            server_log_textblock.ScrollToEnd();
+            foreach (var bezeroa in bezeroak)
+            {
+                using NetworkStream ns = bezeroa.tcpClient.GetStream();
+                bezeroa.sw.WriteLine(mezua);
+            }
+        }
+
+        private void idatziTxatMezuak(string mezua)
+        {
+            chat_log_textblock.Dispatcher.Invoke(() =>
+            {
+                chat_log_textblock.Text += $"{mezua} \n";
+            });
+        }
+
+        private void idatziServerMezuak(string mezua)
+        {
+            server_log_textblock.Dispatcher.Invoke(() =>
+            {
+                server_log_textblock.Text += $"{mezua} \n";
+            });
         }
 
         private void chat_log_textblock_TextChanged(object sender, TextChangedEventArgs e)
         {
-            chat_log_textblock.ScrollToEnd();
+            
+        }
+
+        private void list_clientes_textblock_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void server_log_textblock_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }

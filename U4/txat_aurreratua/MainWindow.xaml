@@ -30,8 +30,10 @@
                  TextWrapping="Wrap" 
                  VerticalAlignment="Top" 
                  Height="66" 
+                 VerticalScrollBarVisibility="Auto"
                  Width="349" TextChanged="server_log_textblock_TextChanged"/>
         <TextBox x:Name="chat_log_textblock" 
+                 VerticalScrollBarVisibility="Auto"
                  IsReadOnly="True" 
                  HorizontalAlignment="Left" 
                  Margin="20,204,0,0" 
@@ -59,7 +61,7 @@
                  Text="" 
                  VerticalAlignment="Top" 
                  Height="162" 
-                 Width="98"/>
+                 Width="98" TextChanged="list_clientes_textblock_TextChanged"/>
 
     </Grid>
 </Window>

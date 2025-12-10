@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net.Sockets;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,7 +17,6 @@ namespace txat_aurreratua_client
         private StreamReader? sr = null;
         private StreamWriter? sw = null;
         private TcpClient? client = null;
-        private CancellationTokenSource? receiveCts = null;
 
         public MainWindow()
         {
@@ -26,12 +26,12 @@ namespace txat_aurreratua_client
             btn_bidali.IsEnabled = false;
         }
 
-        private async void btn_konektatu_Click(object sender, RoutedEventArgs e)
+        private void btn_konektatu_Click(object sender, RoutedEventArgs e)
         {
-            await zerbitzariraKonektatuAsync(txt_box_izena.Text.Trim());
+            zerbitzariraKonektatu(txt_box_izena.Text.Trim());
         }
 
-        private async Task zerbitzariraKonektatuAsync(string izena)
+        private void zerbitzariraKonektatu(string izena)
         {
             if (string.IsNullOrWhiteSpace(izena))
             {
@@ -42,21 +42,19 @@ namespace txat_aurreratua_client
             try
             {
                 //zerbitzarira konektatu
-                client = new TcpClient();
-                await client.ConnectAsync(txt_box_IP.Text.Trim(), portua);
+                client = new TcpClient("127.0.0.1", portua);
                 ns = client.GetStream();
                 sr = new StreamReader(ns, Encoding.UTF8);
                 sw = new StreamWriter(ns, Encoding.UTF8) { AutoFlush = true };
 
                 // izena bidali
-                await sw.WriteLineAsync(izena);
+                sw.WriteLine(izena);
 
                 // zerbitzariaren mezua irakurri
-                var reply = await sr.ReadLineAsync();
+                var reply = sr.ReadLine();
                 if (reply != null)
                 {
-                    txt_chat.AppendText(reply + Environment.NewLine);
-                    txt_chat.ScrollToEnd();
+                    txt_chat.AppendText(reply +" \n");
                 }
 
                 // aldatu interfazeko elementuen egoera
@@ -66,72 +64,50 @@ namespace txat_aurreratua_client
                 txt_box_izena.IsEnabled = false;
                 txt_box_IP.IsEnabled = false;
 
-                // start receive loop
-                receiveCts = new CancellationTokenSource();
-                _ = StartReceiveLoopAsync(receiveCts.Token);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ezin izan da konekxioa egin zerbitzariarekin. Errorea: {ex.Message}");
-                Cleanup();
-            }
-        }
-
-        private async Task StartReceiveLoopAsync(CancellationToken token)
-        {
-            try
-            {
-                if (sr == null) return;
-
-                while (!token.IsCancellationRequested)
+                // Haria erantzunak irakurtzeko
+                Thread t = new Thread(() =>
                 {
-                    // ReadLineAsync is awaited so it does not block the UI thread
-                    string? line = await sr.ReadLineAsync().ConfigureAwait(false);
-                    if (line == null) break; // server closed connection
-
-                    // marshal to UI thread if needed (await above used ConfigureAwait(false)),
-                    // use Dispatcher to be safe
-                    await Dispatcher.InvokeAsync(() =>
+                    try
                     {
-                        txt_chat.AppendText(line + Environment.NewLine);
-                        txt_chat.ScrollToEnd();
-                    });
-                }
+                        string line;
+                        while ((line = sr.ReadLine()) != null)
+                        {
+                            Dispatcher.Invoke(() =>
+                            {
+                                txt_chat.Text += line + "\n";
+                            });
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Dispatcher.Invoke(() =>
+                        {
+                            txt_chat.Text += "Errorea: " + ex.Message + "\n";
+                        });
+                    }
+                });
+                t.IsBackground = true;
+                t.Start();
+
             }
             catch (Exception ex)
             {
-                await Dispatcher.InvokeAsync(() =>
-                {
-                    txt_chat.AppendText($"Receive error: {ex.Message}{Environment.NewLine}");
-                    txt_chat.ScrollToEnd();
-                });
-            }
-            finally
-            {
-                // ensure UI updated on disconnect
-                await Dispatcher.InvokeAsync(() =>
-                {
-                    btn_konektatu.IsEnabled = true;
-                    btn_itxi.IsEnabled = false;
-                    btn_bidali.IsEnabled = false;
-                    txt_box_izena.IsEnabled = true;
-                    txt_box_IP.IsEnabled = true;
-                });
-
-                Cleanup();
+                MessageBox.Show($"Ezin izan da konekxioa egin zerbitzariarekin.");
+                bezeroaItxi();
             }
         }
 
-        private async void btn_bidali_Click(object sender, RoutedEventArgs e)
+        private void btn_bidali_Click(object sender, RoutedEventArgs e)
         {
             if (sw == null) return;
-            var text = txt_chat.Text;
+            var text = txt_mensaje.Text;
             if (string.IsNullOrEmpty(text)) return;
 
+            // zerbitzariari mezua bidali
             try
             {
-                await sw.WriteLineAsync(text);
-                txt_chat.Clear();
+                sw.WriteLine(text);
+                txt_mensaje.Clear();
             }
             catch (Exception ex)
             {
@@ -141,28 +117,27 @@ namespace txat_aurreratua_client
 
         private void btn_itxi_Click(object sender, RoutedEventArgs e)
         {
-            itxi();
+            bezeroaItxi();
         }
 
-        private void itxi()
+        private void bezeroaItxi()
         {
-            receiveCts?.Cancel();
-            Cleanup();
-        }
-
-        private void Cleanup()
-        {
-            try { sw?.Close(); } catch { }
-            try { sr?.Close(); } catch { }
-            try { ns?.Close(); } catch { }
-            try { client?.Close(); } catch { }
+            sw?.Close();
+            sr?.Close();
+            ns?.Close();
+            client?.Close();
 
             sw = null;
             sr = null;
             ns = null;
             client = null;
-            receiveCts?.Dispose();
-            receiveCts = null;
+
+            // aldatu interfazeko elementuen egoera
+            btn_konektatu.IsEnabled = true;
+            btn_itxi.IsEnabled = false;
+            btn_bidali.IsEnabled = false;
+            txt_box_izena.IsEnabled = true;
+            txt_box_IP.IsEnabled = true;
         }
 
         private void txt_box_izena_TextChanged(object sender, TextChangedEventArgs e)
