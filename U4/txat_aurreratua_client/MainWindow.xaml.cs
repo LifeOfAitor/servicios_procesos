@@ -17,13 +17,14 @@ namespace txat_aurreratua_client
         private StreamReader? sr = null;
         private StreamWriter? sw = null;
         private TcpClient? client = null;
+        private bool konektatuta = false;
 
         public MainWindow()
         {
             InitializeComponent();
-            btn_konektatu.IsEnabled = true;
-            btn_itxi.IsEnabled = false;
-            btn_bidali.IsEnabled = false;
+            // btn_konektatu.IsEnabled = true;
+            // btn_itxi.IsEnabled = false;
+            // btn_bidali.IsEnabled = false;
         }
 
         private void btn_konektatu_Click(object sender, RoutedEventArgs e)
@@ -54,15 +55,9 @@ namespace txat_aurreratua_client
                 var reply = sr.ReadLine();
                 if (reply != null)
                 {
-                    txt_chat.AppendText(reply +" \n");
+                    txt_chat.Text += reply +" \n"; // {izena} konektatu da zerbitzarira
+                    konektatuta = true;
                 }
-
-                // aldatu interfazeko elementuen egoera
-                btn_konektatu.IsEnabled = false;
-                btn_itxi.IsEnabled = true;
-                btn_bidali.IsEnabled = true;
-                txt_box_izena.IsEnabled = false;
-                txt_box_IP.IsEnabled = false;
 
                 // Haria erantzunak irakurtzeko
                 Thread t = new Thread(() =>
@@ -77,13 +72,21 @@ namespace txat_aurreratua_client
                                 txt_chat.Text += line + "\n";
                             });
                         }
+                        Dispatcher.Invoke(() =>
+                        {
+                            txt_chat.Text += "Zerbitzaria itxi da. Konexioa galdu da.\n";
+                        });
                     }
                     catch (Exception ex)
                     {
                         Dispatcher.Invoke(() =>
                         {
-                            txt_chat.Text += "Errorea: " + ex.Message + "\n";
+                            txt_chat.Text += $"Konexio errorea: {ex.Message}\n";
                         });
+                    }
+                    finally
+                    {
+                        bezeroaItxi();
                     }
                 });
                 t.IsBackground = true;
@@ -92,57 +95,65 @@ namespace txat_aurreratua_client
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ezin izan da konekxioa egin zerbitzariarekin.");
+                MessageBox.Show($"Ezin izan da zerbitzarira konektatu: {ex.Message}");
                 bezeroaItxi();
             }
         }
 
         private void btn_bidali_Click(object sender, RoutedEventArgs e)
         {
-            if (sw == null) return;
-            var text = txt_mensaje.Text;
-            if (string.IsNullOrEmpty(text)) return;
+            if (sw != null && konektatuta)
+            {
+                string mezua = txt_mensaje.Text;
+                if (string.IsNullOrEmpty(mezua)) return;
 
-            // zerbitzariari mezua bidali
-            try
-            {
-                sw.WriteLine(text);
-                txt_mensaje.Clear();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Errorea bidaltzean: {ex.Message}");
+                // zerbitzariari mezua bidali
+                try
+                {
+                    sw.WriteLine(mezua);
+                    txt_mensaje.Clear();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Errorea bidaltzean: {ex.Message}");
+                    bezeroaItxi();
+                }
             }
         }
 
         private void btn_itxi_Click(object sender, RoutedEventArgs e)
         {
-            bezeroaItxi();
+            if (konektatuta)
+            {
+                bezeroaItxi();
+            }
         }
 
         private void bezeroaItxi()
         {
-            sw?.Close();
-            sr?.Close();
-            ns?.Close();
-            client?.Close();
-
-            sw = null;
-            sr = null;
-            ns = null;
-            client = null;
-
-            // aldatu interfazeko elementuen egoera
-            btn_konektatu.IsEnabled = true;
-            btn_itxi.IsEnabled = false;
-            btn_bidali.IsEnabled = false;
-            txt_box_izena.IsEnabled = true;
-            txt_box_IP.IsEnabled = true;
+            if (!konektatuta) return;
+            
+            konektatuta = false;
+            
+            try
+            {
+                sw?.Close();
+                sr?.Close();
+                ns?.Close();
+                client?.Close();
+                Dispatcher.Invoke(() =>
+                {
+                    txt_chat.Text += "Zerbitzaritik deskonektatuta \n";
+                });
+            }
+            catch (Exception ex)
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    txt_chat.Text += "Errorea deskonektatzean: " + ex.Message + "\n";
+                });
+            }
         }
 
-        private void txt_box_izena_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            btn_konektatu.IsEnabled = !string.IsNullOrWhiteSpace(txt_box_izena.Text);
-        }
     }
 }

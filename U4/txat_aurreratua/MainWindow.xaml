@@ -31,7 +31,7 @@
                  VerticalAlignment="Top" 
                  Height="66" 
                  VerticalScrollBarVisibility="Auto"
-                 Width="349" TextChanged="server_log_textblock_TextChanged"/>
+                 Width="349"/>
         <TextBox x:Name="chat_log_textblock" 
                  VerticalScrollBarVisibility="Auto"
                  IsReadOnly="True" 
@@ -40,20 +40,21 @@
                  TextWrapping="Wrap" 
                  VerticalAlignment="Top"
                  Height="210" 
-                 Width="349" TextChanged="chat_log_textblock_TextChanged"/>
+                 Width="349"/>
         <Label Content="Bezeroak" 
                HorizontalAlignment="Left" 
                Margin="369,204,0,0" 
                VerticalAlignment="Top" 
                Width="61" 
                Height="34"/>
-        <TextBox HorizontalAlignment="Left" 
+        <TextBox 
+                 x:Name="textbox_countBezeroak"
+                 HorizontalAlignment="Left" 
                  Margin="435,204,0,0" 
                  TextWrapping="Wrap" 
-                 Text="{Binding bezeroKopurua}" 
+                 Text="{Binding bezeroak.Count, Mode=OneWay}" 
                  VerticalAlignment="Top" 
-                 Width="37" Height="29" 
-                 TextChanged="TextBox_TextChanged"/>
+                 Width="37" Height="29" />
         <TextBox x:Name="list_clientes_textblock" 
                  HorizontalAlignment="Left" 
                  Margin="374,252,0,0" 
@@ -61,7 +62,7 @@
                  Text="" 
                  VerticalAlignment="Top" 
                  Height="162" 
-                 Width="98" TextChanged="list_clientes_textblock_TextChanged"/>
+                 Width="98"/>
 
     </Grid>
 </Window>

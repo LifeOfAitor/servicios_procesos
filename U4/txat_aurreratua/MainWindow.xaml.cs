@@ -1,7 +1,9 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,13 +22,14 @@ namespace txat_aurreratua
         private const string ipadress = "127.0.0.1";
         private object lockObj = new object();
         private const int portua = 5000;
-        private List<BezeroObjetua> bezeroak = new();
+        public ObservableCollection<BezeroObjetua> bezeroak { get; set; } = new ObservableCollection<BezeroObjetua>();
         private TcpListener server = null;
         private bool zerbitzariaMartxan = false;
 
 
         public MainWindow()
         {
+            DataContext=this;
             InitializeComponent();
         }
 
@@ -97,57 +100,87 @@ namespace txat_aurreratua
         }
         public void itxiZerbitzaria()
         {
-            server.Stop();
+            server?.Stop();
+            server = null;
+            lock (lockObj)
+            {
+                bezeroak.Clear();
+            }
             zerbitzariaMartxan = false;
             btn_martxan.IsEnabled = true;
             btn_itzali.IsEnabled = false;
+
         }
 
         public void BezeroarekinGauzakEgin(TcpClient bezeroarenTCP)
         {
+            // bezero berria (Objetua) sortu
             BezeroObjetua bezeroa = new BezeroObjetua(bezeroarenTCP);
             lock (lockObj)
             {
                 bezeroak.Add(bezeroa);
             }
-            // bezero berria (Objetua) sortu
-            string izena = bezeroa.sr.ReadLine();
-            bezeroa.setIzena(izena);
-            string mezua = $"{bezeroa.izena} konektatu da zerbitzarira";
-            bezeroa.sw.WriteLine(mezua);
-            idatziServerMezuak(mezua);
-
             try
             {
-                while (zerbitzariaMartxan)
+                // bezeroaren izena ezarri
+                string izena = bezeroa.sr.ReadLine();
+                bezeroa.setIzena(izena);
+                string mezua = $"{bezeroa.izena} konektatu da zerbitzarira";
+                bezeroa.sw.WriteLine(mezua);
+                idatziServerMezuak(mezua);
+
+                // bukle honetan dena pasatuko da
+                string jasotakoMezua;
+                while ((jasotakoMezua = bezeroa.sr.ReadLine()) != null)
                 {
-                    //bezerotik jasotzeko mezua
-                    string jasotakoMezua = bezeroa.sr.ReadLine();
                     mezua = $"{bezeroa.izena}: {jasotakoMezua}";
                     idatziTxatMezuak(mezua);
                     bezeroeiBidali(mezua);
                 }
+
             }
             catch (Exception ex)
             {
-                bezeroa.ns.Close();
-                bezeroa.sw.Close();
-                bezeroa.sr.Close();
-                bezeroarenTCP.Close();
-                idatziServerMezuak($"{bezeroa.izena} deskonektatu da");
-                lock (lockObj)
+                server_log_textblock.Dispatcher.Invoke(() =>
                 {
-                    bezeroak.Remove(bezeroa);
-                }
+                    server_log_textblock.Text += $"{bezeroa.izena}rekin errorea gertatu da. \n";
+                });
+            }
+            // bezeroa deskonektatu da -> bezeroa itxi
+            finally
+            {
+                bezeroaItxi(bezeroa);
             }
         }
 
         private void bezeroeiBidali(string mezua)
         {
-            foreach (var bezeroa in bezeroak)
+            lock (lockObj)
             {
-                using NetworkStream ns = bezeroa.tcpClient.GetStream();
-                bezeroa.sw.WriteLine(mezua);
+                foreach (var bezeroa in bezeroak)
+                {
+                    try
+                    {
+                        bezeroa.sw.WriteLine(mezua);
+                    }
+                    catch
+                    {
+                        // momentuz ezer
+                    }
+                }
+            }
+        }
+
+        private void bezeroaItxi(BezeroObjetua bezeroa)
+        {
+            bezeroa.ns.Close();
+            bezeroa.sw.Close();
+            bezeroa.sr.Close();
+            bezeroa.tcpClient.Close();
+            idatziServerMezuak($"{bezeroa.izena} deskonektatu da");
+            lock (lockObj)
+            {
+                bezeroak.Remove(bezeroa);
             }
         }
 
@@ -165,26 +198,6 @@ namespace txat_aurreratua
             {
                 server_log_textblock.Text += $"{mezua} \n";
             });
-        }
-
-        private void chat_log_textblock_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            
-        }
-
-        private void list_clientes_textblock_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void server_log_textblock_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
         }
     }
 }
