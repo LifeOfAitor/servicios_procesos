@@ -7,8 +7,8 @@
       "RelativeMoniker": "D:0:0:{06823F15-5209-418D-A744-01390449E400}|txat_aurreratua.csproj|solutionrelative:mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{06823F15-5209-418D-A744-01390449E400}|txat_aurreratua.csproj|d:\\servicios_procesos\\u4\\txat_aurreratua\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{06823F15-5209-418D-A744-01390449E400}|txat_aurreratua.csproj|solutionrelative:mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+      "AbsoluteMoniker": "D:0:0:{06823F15-5209-418D-A744-01390449E400}|txat_aurreratua.csproj|d:\\servicios_procesos\\u4\\txat_aurreratua\\txat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{06823F15-5209-418D-A744-01390449E400}|txat_aurreratua.csproj|solutionrelative:txat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -35,13 +35,14 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "MainWindow.xaml",
-              "DocumentMoniker": "D:\\servicios_procesos\\U4\\txat_aurreratua\\MainWindow.xaml",
-              "RelativeDocumentMoniker": "MainWindow.xaml",
-              "ToolTip": "D:\\servicios_procesos\\U4\\txat_aurreratua\\MainWindow.xaml",
-              "RelativeToolTip": "MainWindow.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-12-11T08:05:15.319Z",
+              "Title": "Txat.cs",
+              "DocumentMoniker": "D:\\servicios_procesos\\U4\\txat_aurreratua\\Txat.cs",
+              "RelativeDocumentMoniker": "Txat.cs",
+              "ToolTip": "D:\\servicios_procesos\\U4\\txat_aurreratua\\Txat.cs",
+              "RelativeToolTip": "Txat.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-12T07:50:09.534Z",
               "EditorCaption": ""
             },
             {
@@ -52,7 +53,7 @@
               "RelativeDocumentMoniker": "MainWindow.xaml.cs",
               "ToolTip": "D:\\servicios_procesos\\U4\\txat_aurreratua\\MainWindow.xaml.cs",
               "RelativeToolTip": "MainWindow.xaml.cs",
-              "ViewState": "AgIAAGsAAAAAAAAAAAAmwK0AAAAVAAAAAAAAAA==",
+              "ViewState": "AgIAAIkAAAAAAAAAAAAAwL8AAAA+AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-26T11:47:28.096Z",
               "EditorCaption": ""

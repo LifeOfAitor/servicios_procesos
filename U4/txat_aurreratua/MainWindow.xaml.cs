@@ -25,6 +25,7 @@ namespace txat_aurreratua
         public ObservableCollection<BezeroObjetua> bezeroak { get; set; } = new ObservableCollection<BezeroObjetua>();
         private TcpListener server = null;
         private bool zerbitzariaMartxan = false;
+        private Txat txat = new Txat();
 
 
         public MainWindow()
@@ -126,6 +127,10 @@ namespace txat_aurreratua
                 string izena = bezeroa.sr.ReadLine();
                 bezeroa.setIzena(izena);
                 string mezua = $"{bezeroa.izena} konektatu da zerbitzarira";
+                lock (lockObj)
+                {
+                    txat.gehitu(mezua); // jasotako mezuak jun sartzen txat objetuan
+                }
                 bezeroa.sw.WriteLine(mezua);
                 idatziServerMezuak(mezua);
 
@@ -134,6 +139,10 @@ namespace txat_aurreratua
                 while ((jasotakoMezua = bezeroa.sr.ReadLine()) != null)
                 {
                     mezua = $"{bezeroa.izena}: {jasotakoMezua}";
+                    lock (lockObj)
+                    {
+                        txat.gehitu(jasotakoMezua); // jasotako mezuak jun sartzen txat objetuan
+                    }
                     idatziTxatMezuak(mezua);
                     bezeroeiBidali(mezua);
                 }
@@ -178,6 +187,10 @@ namespace txat_aurreratua
             bezeroa.sr.Close();
             bezeroa.tcpClient.Close();
             idatziServerMezuak($"{bezeroa.izena} deskonektatu da");
+            lock (lockObj)
+            {
+                txat.gehitu($"{bezeroa.izena} deskonektatu da"); // jasotako mezuak jun sartzen txat objetuan
+            }
             lock (lockObj)
             {
                 bezeroak.Remove(bezeroa);
