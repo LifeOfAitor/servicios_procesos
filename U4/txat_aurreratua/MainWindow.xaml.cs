@@ -23,6 +23,7 @@ namespace txat_aurreratua
         private object lockObj = new object();
         private const int portua = 5000;
         public ObservableCollection<BezeroObjetua> bezeroak { get; set; } = new ObservableCollection<BezeroObjetua>();
+        public ObservableCollection<string> izenak { get; set; } = new ObservableCollection<string>();
         private TcpListener server = null;
         private bool zerbitzariaMartxan = false;
         private Txat txat = new Txat();
@@ -101,11 +102,13 @@ namespace txat_aurreratua
         }
         public void itxiZerbitzaria()
         {
+            bezeroeiBidali("itxi");
             server?.Stop();
             server = null;
             lock (lockObj)
             {
                 bezeroak.Clear();
+                izenak.Clear();
             }
             zerbitzariaMartxan = false;
             btn_martxan.IsEnabled = true;
@@ -126,6 +129,7 @@ namespace txat_aurreratua
                 // bezeroaren izena ezarri
                 string izena = bezeroa.sr.ReadLine();
                 bezeroa.setIzena(izena);
+                Dispatcher.Invoke(() => izenak.Add(izena));
                 string mezua = $"{bezeroa.izena} konektatu da zerbitzarira";
                 lock (lockObj)
                 {
@@ -168,14 +172,7 @@ namespace txat_aurreratua
             {
                 foreach (var bezeroa in bezeroak)
                 {
-                    try
-                    {
                         bezeroa.sw.WriteLine(mezua);
-                    }
-                    catch
-                    {
-                        // momentuz ezer
-                    }
                 }
             }
         }
@@ -193,6 +190,7 @@ namespace txat_aurreratua
             }
             lock (lockObj)
             {
+                Dispatcher.Invoke(() => izenak.Remove(bezeroa.izena));
                 bezeroak.Remove(bezeroa);
             }
         }

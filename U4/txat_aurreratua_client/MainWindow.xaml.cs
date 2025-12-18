@@ -18,13 +18,12 @@ namespace txat_aurreratua_client
         private StreamWriter? sw = null;
         private TcpClient? client = null;
         private bool konektatuta = false;
+        private CancellationTokenSource? cancellationTokenSource = null;
+        private readonly object lockObj = new object();
 
         public MainWindow()
         {
             InitializeComponent();
-            // btn_konektatu.IsEnabled = true;
-            // btn_itxi.IsEnabled = false;
-            // btn_bidali.IsEnabled = false;
         }
 
         private void btn_konektatu_Click(object sender, RoutedEventArgs e)
@@ -42,56 +41,40 @@ namespace txat_aurreratua_client
 
             try
             {
-                //zerbitzarira konektatu
                 client = new TcpClient("127.0.0.1", portua);
                 ns = client.GetStream();
                 sr = new StreamReader(ns, Encoding.UTF8);
                 sw = new StreamWriter(ns, Encoding.UTF8) { AutoFlush = true };
 
-                // izena bidali
                 sw.WriteLine(izena);
 
-                // zerbitzariaren mezua irakurri
                 var reply = sr.ReadLine();
                 if (reply != null)
                 {
-                    txt_chat.Text += reply +" \n"; // {izena} konektatu da zerbitzarira
-                    konektatuta = true;
+                    txt_chat.Text += reply + " \n";
+                    lock (lockObj)
+                    {
+                        konektatuta = true;
+                    }
                 }
 
-                // Haria erantzunak irakurtzeko
-                Thread t = new Thread(() =>
+                /*
+                 * sortuko dugu cancellationTokenSource haria modu seguruan geldiarazteko.
+                 * --------SUPER INTERESGARRIA ERRONKARAKO----------
+                 *User clicks "Disconnect"
+                 *         ↓
+                 *bezeroaItxi() calls cancellationTokenSource?.Cancel()
+                 *         ↓
+                 *The CancellationToken inside IrakurriErantzunak detects the signal
+                 *         ↓
+                 *The while loop condition fails and the thread exits cleanly
+                 */
+                cancellationTokenSource = new CancellationTokenSource();
+                Thread t = new Thread(() => IrakurriErantzunak(cancellationTokenSource.Token))
                 {
-                    try
-                    {
-                        string line;
-                        while ((line = sr.ReadLine()) != null)
-                        {
-                            Dispatcher.Invoke(() =>
-                            {
-                                txt_chat.Text += line + "\n";
-                            });
-                        }
-                        Dispatcher.Invoke(() =>
-                        {
-                            txt_chat.Text += "Zerbitzaria itxi da. Konexioa galdu da.\n";
-                        });
-                    }
-                    catch (Exception ex)
-                    {
-                        Dispatcher.Invoke(() =>
-                        {
-                            txt_chat.Text += $"Konexio errorea: {ex.Message}\n";
-                        });
-                    }
-                    finally
-                    {
-                        bezeroaItxi();
-                    }
-                });
-                t.IsBackground = true;
+                    IsBackground = true
+                };
                 t.Start();
-
             }
             catch (Exception ex)
             {
@@ -100,51 +83,87 @@ namespace txat_aurreratua_client
             }
         }
 
+        private void IrakurriErantzunak(CancellationToken cancellationToken)
+        {
+            try
+            {
+                string? line;
+                while (!cancellationToken.IsCancellationRequested && sr != null && (line = sr.ReadLine()) != "itxi")
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                            txt_chat.Text += line + "\n";
+                    });
+                }
+
+                Dispatcher.Invoke(() =>
+                {
+                        txt_chat.Text += "Zerbitzaria itxi da. Konexioa galdu da.\n";
+                });
+            }
+            catch (IOException)
+            {
+                Dispatcher.Invoke(() =>
+                {
+                        txt_chat.Text += "Konexioa galdu da.\n";
+                });
+            }
+            catch (Exception ex)
+            {
+                Dispatcher.Invoke(() =>
+                {
+                        txt_chat.Text += $"Konexio errorea: {ex.Message}\n";
+                });
+            }
+            finally
+            {
+                bezeroaItxi();
+            }
+        }
+
         private void btn_bidali_Click(object sender, RoutedEventArgs e)
         {
-            if (sw != null && konektatuta)
+            lock (lockObj)
             {
-                string mezua = txt_mensaje.Text;
-                if (string.IsNullOrEmpty(mezua)) return;
+                if (sw != null && konektatuta)
+                {
+                    string mezua = txt_mensaje.Text;
+                    if (string.IsNullOrEmpty(mezua)) return;
 
-                // zerbitzariari mezua bidali
-                try
-                {
-                    sw.WriteLine(mezua);
-                    txt_mensaje.Clear();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Errorea bidaltzean: {ex.Message}");
-                    bezeroaItxi();
+                    try
+                    {
+                        sw.WriteLine(mezua);
+                        txt_mensaje.Clear();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Errorea bidaltzean: {ex.Message}");
+                        bezeroaItxi();
+                    }
                 }
             }
         }
 
         private void btn_itxi_Click(object sender, RoutedEventArgs e)
         {
-            if (konektatuta)
-            {
-                bezeroaItxi();
-            }
+            bezeroaItxi();
         }
 
         private void bezeroaItxi()
         {
-            if (!konektatuta) return;
-            
-            konektatuta = false;
-            
+            lock (lockObj)
+            {
+                if (!konektatuta) return;
+                konektatuta = false;
+            }
+
             try
             {
+                cancellationTokenSource?.Cancel();
                 sw?.Close();
                 sr?.Close();
                 ns?.Close();
                 client?.Close();
-                Dispatcher.Invoke(() =>
-                {
-                    txt_chat.Text += "Zerbitzaritik deskonektatuta \n";
-                });
             }
             catch (Exception ex)
             {
@@ -153,7 +172,25 @@ namespace txat_aurreratua_client
                     txt_chat.Text += "Errorea deskonektatzean: " + ex.Message + "\n";
                 });
             }
-        }
+            finally
+            {
+                sw?.Dispose();
+                sr?.Dispose();
+                ns?.Dispose();
+                client?.Dispose();
 
+                cancellationTokenSource?.Dispose();
+                cancellationTokenSource = null;
+                ns = null;
+                sr = null;
+                sw = null;
+                client = null;
+
+                Dispatcher.Invoke(() =>
+                {
+                    txt_chat.Text += "Zerbitzaritik deskonektatuta \n";
+                });
+            }
+        }
     }
 }

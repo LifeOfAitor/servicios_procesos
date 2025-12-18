@@ -5,10 +5,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{A02E872C-B75B-43C0-97D5-B7CA41C01803}|txat_aurreratua_client.csproj|d:\\servicios_procesos\\u4\\txat_aurreratua_client\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A02E872C-B75B-43C0-97D5-B7CA41C01803}|txat_aurreratua_client.csproj|solutionrelative:mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A02E872C-B75B-43C0-97D5-B7CA41C01803}|txat_aurreratua_client.csproj|d:\\servicios_procesos\\u4\\txat_aurreratua_client\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{A02E872C-B75B-43C0-97D5-B7CA41C01803}|txat_aurreratua_client.csproj|solutionrelative:mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,7 +14,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 109,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -34,25 +30,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "MainWindow.xaml",
-              "DocumentMoniker": "D:\\servicios_procesos\\U4\\txat_aurreratua_client\\MainWindow.xaml",
-              "RelativeDocumentMoniker": "MainWindow.xaml",
-              "ToolTip": "D:\\servicios_procesos\\U4\\txat_aurreratua_client\\MainWindow.xaml",
-              "RelativeToolTip": "MainWindow.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-12-10T09:37:21.734Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
               "Title": "MainWindow.xaml.cs",
               "DocumentMoniker": "D:\\servicios_procesos\\U4\\txat_aurreratua_client\\MainWindow.xaml.cs",
               "RelativeDocumentMoniker": "MainWindow.xaml.cs",
               "ToolTip": "D:\\servicios_procesos\\U4\\txat_aurreratua_client\\MainWindow.xaml.cs",
               "RelativeToolTip": "MainWindow.xaml.cs",
-              "ViewState": "AgIAADQAAAAAAAAAAAAmwEkAAAAZAAAAAAAAAA==",
+              "ViewState": "AgIAAJgAAAAAAAAAAAAuwD4AAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-27T09:27:48.603Z",
               "EditorCaption": ""
